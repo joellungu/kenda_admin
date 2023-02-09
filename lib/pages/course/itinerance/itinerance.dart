@@ -400,16 +400,22 @@ class _Itenerance extends State<Itenerance> {
                             //
                             Get.back();
                             //
-                            Get.to(
-                              NouvelleItinerance(
-                                l,
-                                {
-                                  "depart": itineranceController.depart.value,
-                                  "arrive": itineranceController.arrive.value,
-                                },
-                                this,
-                              ),
-                            );
+                            if (l.isNotEmpty) {
+                              Get.to(
+                                NouvelleItinerance(
+                                  l,
+                                  {
+                                    "depart": itineranceController.depart.value,
+                                    "arrive": itineranceController.arrive.value,
+                                  },
+                                  this,
+                                ),
+                              );
+                            } else {
+                              Get.snackbar(
+                                  "Vide", "Pas d'itinerance pour le moment.");
+                            }
+
                             //
                           } else {
                             //

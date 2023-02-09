@@ -4,7 +4,9 @@ import 'package:get/get.dart';
 
 class InfoSupplementaire extends StatelessWidget {
   Map? details;
-  InfoSupplementaire({Key? key, this.details}) : super(key: key);
+  InfoSupplementaire({Key? key, this.details}) : super(key: key) {
+    print("bus: ${details!['bus']}");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +30,7 @@ class InfoSupplementaire extends StatelessWidget {
                     size: 40,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 15,
                 ),
                 RichText(
@@ -44,7 +46,7 @@ class InfoSupplementaire extends StatelessWidget {
                         ),
                       ),
                     ],
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w900,
                       color: Colors.black,
@@ -68,7 +70,7 @@ class InfoSupplementaire extends StatelessWidget {
           ),
           Container(
             height: 50,
-            padding: EdgeInsets.only(
+            padding: const EdgeInsets.only(
               right: 10,
             ),
             child: Row(
@@ -87,15 +89,16 @@ class InfoSupplementaire extends StatelessWidget {
                         size: 40,
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 15,
                     ),
                     RichText(
                       text: TextSpan(
-                        text: "Transco Métro\n",
+                        text: "${details!['bus']['nom']}\n", //Transco Métro
                         children: [
                           TextSpan(
-                            text: "vers Boma",
+                            text:
+                                "vers ${details!['provinceArrive']} à ${details!['lieuArrive']}",
                             style: TextStyle(
                               color: Colors.grey.shade900,
                               fontSize: 17,
@@ -121,7 +124,7 @@ class InfoSupplementaire extends StatelessWidget {
             child: ListView(
               children: [
                 Padding(
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   child: Column(
                     children: [
                       ListTile(
@@ -135,14 +138,22 @@ class InfoSupplementaire extends StatelessWidget {
                         ),
                       ),
                       ListTile(
-                        leading: const Icon(CupertinoIcons.profile_circled),
-                        title: const Text("Mr. Jean Didie Mangombe"),
-                        subtitle: const Text("Chauffeur"),
+                        leading: Icon(CupertinoIcons.profile_circled),
+                        title: Text(
+                            "${details!['chauffeur']['nom']} ${details!['chauffeur']['postnom']} ${details!['chauffeur']['prenom']}"), //Mr. Jean Didie Mangombe
+                        subtitle: Text("Chauffeur"),
                       ),
                       ListTile(
-                        leading: const Icon(CupertinoIcons.profile_circled),
-                        title: const Text("Evariste Mwamba"),
-                        subtitle: const Text("Receptionniste"),
+                        leading: Icon(CupertinoIcons.profile_circled),
+                        title: Text(
+                            "${details!['receveur']['nom']} ${details!['receveur']['postnom']} ${details!['receveur']['prenom']}"),
+                        subtitle: Text("Receptionniste"),
+                      ),
+                      ListTile(
+                        leading: Icon(CupertinoIcons.profile_circled),
+                        title: Text(
+                            "${details!['embarqueur']['nom']} ${details!['embarqueur']['postnom']} ${details!['embarqueur']['prenom']}"),
+                        subtitle: Text("embarqueur"),
                       ),
                       Divider(),
                       ListTile(
@@ -156,25 +167,26 @@ class InfoSupplementaire extends StatelessWidget {
                         ),
                       ),
                       ListTile(
-                        leading: const Icon(Icons.safety_divider),
-                        title: const Text("Nombre de places"),
-                        subtitle: const Text("50"),
+                        leading: Icon(Icons.safety_divider),
+                        title: Text("Nombre de places"),
+                        subtitle: Text("${details!['bus']['capacite']}"),
                       ),
                       ListTile(
-                        leading:
-                        const Icon(CupertinoIcons.thermometer_snowflake),
-                        title: const Text("Climatisé"),
+                        leading: Icon(CupertinoIcons.thermometer_snowflake),
+                        title: Text(
+                            " ${details!['bus']['climatisation'] ? '' : 'Non '} Climatisé"),
                         //subtitle: const Text("Receptionniste"),
                       ),
                       ListTile(
-                        leading: const Icon(CupertinoIcons.gauge),
-                        title: const Text("Vitesse max"),
-                        subtitle: const Text("250 Km/h"),
+                        leading: Icon(CupertinoIcons.gauge),
+                        title: Text("Vitesse max"),
+                        subtitle: Text("250 Km/h"),
                       ),
                       ListTile(
-                        leading: const Icon(CupertinoIcons.wrench_fill),
-                        title: const Text("Dernière entretien"),
-                        subtitle: const Text("12 déc 2022"),
+                        leading: Icon(CupertinoIcons.wrench_fill),
+                        title: Text("Plus"),
+                        subtitle:
+                            Text("${details!['bus']['caracteristiques']}"),
                       ),
                       Divider(),
                     ],

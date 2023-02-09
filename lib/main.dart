@@ -6,10 +6,10 @@ import 'package:kenda_admin/pages/splash.dart';
 
 import 'utils/traduction.dart';
 
-void main() {
+void main() async {
   SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(statusBarColor: Colors.indigo.shade900));
-
+  await GetStorage.init();
   runApp(KendaAdmin());
 }
 

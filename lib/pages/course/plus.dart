@@ -5,40 +5,44 @@ import 'package:kenda_admin/pages/course/carte.dart';
 import 'package:kenda_admin/pages/course/details_arrets.dart';
 import 'package:kenda_admin/pages/course/infos.dart';
 import 'package:kenda_admin/pages/course/infos_supplementaire.dart';
-import 'package:kenda_admin/pages/course/plus.dart';
 import 'package:kenda_admin/pages/course/reservation.dart';
 import 'package:kenda_admin/widgets/modal.dart';
 import 'package:timelines/timelines.dart';
 
-class Detail extends StatefulWidget {
+class Plus extends StatefulWidget {
   Map e;
-  Detail(this.e) {
-    print("t: ${e['status']}");
+  Plus(this.e) {
+    print("t: ${e['troncons']}");
   }
   //
   @override
   State<StatefulWidget> createState() {
-    return _Detail();
+    return _Plus();
   }
 }
 
-class _Detail extends State<Detail> {
-  int arrs = 0;
+class _Plus extends State<Plus> {
+  List listeArrets = [];
+  Set listTitre = Set();
+
   @override
   void initState() {
-    // TODO: implement initState
-    super.initState();
     //
     List l = widget.e['troncons'] ?? [];
-    Set listTitre = Set();
     //
     l.forEach((element) {
       if (listTitre.add(element['arretArrive']['nom'])) {
-        arrs++;
+        Map m = element;
+        m['details'] = element['arretArrive'];
+        listeArrets.add(m);
       } else if (listTitre.add(element['arretDepart']['nom'])) {
-        arrs++;
+        Map m = element;
+        m['details'] = element['arretDepart'];
+        listeArrets.add(m);
       }
     });
+    //
+    super.initState();
   }
 
   @override
@@ -191,16 +195,20 @@ class _Detail extends State<Detail> {
                               right: 20,
                             ),
                             alignment: Alignment.centerRight,
-                            child: ElevatedButton(
+                            child: ElevatedButton.icon(
                               onPressed: () {},
                               style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                    Colors.red.shade900),
+                                backgroundColor: widget.e['terminer']
+                                    ? MaterialStateProperty.all(
+                                        Colors.green.shade900)
+                                    : MaterialStateProperty.all(
+                                        Colors.blue.shade900),
                               ),
-                              child: Text(
-                                widget.e['status'] == 0
-                                    ? "Suspendre"
-                                    : "Reprendre",
+                              icon: widget.e['terminer']
+                                  ? Icon(Icons.check_circle)
+                                  : Icon(Icons.timelapse),
+                              label: Text(
+                                widget.e['terminer'] ? 'Terminé' : 'En coure',
                                 style: TextStyle(
                                   color: Colors.white,
                                 ),
@@ -234,94 +242,53 @@ class _Detail extends State<Detail> {
                 padding: EdgeInsets.all(10),
                 child: Column(
                   children: [
-                    ListTile(
-                      onTap: () {
-                        //
-                        showSimpleModal(
-                            InfoSupplementaire(
-                              details: widget.e,
-                            ),
-                            context);
-                      },
-                      leading: const Icon(CupertinoIcons.gauge),
-                      title: const Text("Informations supplémentaire"),
-                      subtitle: const Text("Détails"),
-                      trailing: const Icon(
-                        Icons.arrow_forward_ios,
-                        size: 15,
-                      ),
+                    const Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text("Arrets"),
                     ),
-                    ListTile(
-                      onTap: () {
-                        //showSimpleModal(Reservation(), context);
-                      },
-                      //airline_seat_recline_extra_rounded
-                      leading: Icon(CupertinoIcons.bus),
-                      title: Text("Emplacement du bus actuellement"),
-                      subtitle: Text("Kongo central / Boma"),
-                      trailing: const Icon(
-                        Icons.arrow_forward_ios,
-                        size: 15,
-                      ),
-                    ),
-                    ListTile(
-                      onTap: () {
-                        Get.to(
-                          ArretsDetails(widget.e['troncons'], 0, this),
+                    Column(
+                      children: List.generate(listeArrets.length, (index) {
+                        Map x = listeArrets[index];
+                        return ListTile(
+                          onTap: () {
+                            //Get.to(
+                            //ArretsDetails(widget.e['troncons'], 0, this),
+                            //);
+                          },
+                          leading: Icon(Icons.location_on_outlined),
+                          title: Text(
+                              "${x['details']['province']} ${x['details']['nom']}"),
+                          subtitle: Text("12 Passagers"),
+                          trailing: Icon(
+                            Icons.arrow_forward_ios,
+                            size: 15,
+                          ),
                         );
-                      },
-                      leading: Icon(Icons.location_on_outlined),
-                      title: Text("Arrets"),
-                      subtitle: Text("$arrs arrets"),
-                      trailing: Icon(
-                        Icons.arrow_forward_ios,
-                        size: 15,
-                      ),
-                    ),
-                    ListTile(
-                      onTap: () {
-                        Get.to(Plus(widget.e));
-                      },
-                      leading: Icon(Icons.info_outline),
-                      title: Text("Plus"),
-                      subtitle: Text("..."),
-                      trailing: Icon(
-                        Icons.arrow_forward_ios,
-                        size: 15,
-                      ),
+                      }),
                     ),
                     const Divider(
                       color: Colors.grey,
                     ),
                     const SizedBox(
                       height: 10,
+                    ),
+                    ListTile(
+                      onTap: () {
+                        //Get.to(
+                        //ArretsDetails(widget.e['troncons'], 0, this),
+                        //);
+                      },
+                      //leading: Icon(Icons.all_inbox),
+                      title: Text("Total"),
+                      subtitle: Text("120 Passagers"),
+                      trailing: Icon(
+                        Icons.arrow_forward_ios,
+                        size: 15,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
                     )
-                    // Align(
-                    //     alignment: Alignment.centerLeft,
-                    //     child: Padding(
-                    //       padding: EdgeInsets.only(left: 20, bottom: 10),
-                    //       child: Text("Arrets"),
-                    //     )),
-                    // //Trajectoire(),
-                    // //Trajectoire(),//
-                    // Timeline.tileBuilder(
-                    //   shrinkWrap: true,
-                    //   physics: ClampingScrollPhysics(),
-                    //   builder: TimelineTileBuilder.fromStyle(
-                    //     contentsAlign: ContentsAlign.basic,
-                    //     contentsBuilder: (context, index) {
-                    //       Map a = widget.e['troncons'][index];
-                    //       return Padding(
-                    //         padding: const EdgeInsets.all(4.0),
-                    //         child: ListTile(
-                    //           title: Text("${a['arretDepart']['nom']}"),
-                    //           subtitle: Text("${a['arretArrive']['nom']}"),
-                    //         ),
-                    //       );
-                    //     },
-                    //     itemCount: widget.e['troncons'].length,
-                    //   ),
-                    // )
                   ],
                 ),
               )
@@ -416,6 +383,7 @@ class _Detail extends State<Detail> {
     );
   }
 
+  //
   String getDateDepart(String date) {
     int year = int.parse(date.split(" ")[0].split("-")[0]);
     int month = int.parse(date.split(" ")[0].split("-")[1]);
@@ -443,6 +411,7 @@ class _Detail extends State<Detail> {
     return "${jours[d.weekday]} $day ${mois[month]}";
   }
 
+  //
   String getDuree(String dateDepart, String dateArrive) {
     int year1 = int.parse(dateDepart.split(" ")[0].split("-")[0]);
     int month1 = int.parse(dateDepart.split(" ")[0].split("-")[1]);
@@ -465,133 +434,6 @@ class _Detail extends State<Detail> {
     //
     return "${heure.inHours} h";
   }
-
   //
 
-}
-
-class TicketQrCode extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10),
-      child: Column(
-        children: [
-          SizedBox(
-            height: 50,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                IconButton(
-                  onPressed: () {
-                    //
-                    Get.back();
-                    //
-                  },
-                  icon: const Icon(
-                    Icons.close,
-                    size: 40,
-                  ),
-                ),
-                const SizedBox(
-                  width: 15,
-                ),
-                RichText(
-                  text: TextSpan(
-                    text: "Votre Qrcode",
-                    children: [
-                      TextSpan(
-                        text: "",
-                        style: TextStyle(
-                          color: Colors.grey.shade900,
-                          fontSize: 19,
-                          fontWeight: FontWeight.w300,
-                        ),
-                      ),
-                    ],
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w900,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
-
-                //                           Text(
-                //   "Info trajet",
-                //   style: TextStyle(
-                //     color: Colors.black,
-                //     fontWeight: FontWeight.bold,
-                //     fontSize: 20,
-                //   ),
-                // ),
-              ],
-            ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Container(
-            height: 50,
-            padding: EdgeInsets.only(
-              right: 10,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        //
-                        //Get.back();
-                        //
-                      },
-                      icon: const Icon(
-                        CupertinoIcons.bus,
-                        size: 40,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 15,
-                    ),
-                    RichText(
-                      text: TextSpan(
-                        text: "Transco Métro\n",
-                        children: [
-                          TextSpan(
-                            text: "vers Boma",
-                            style: TextStyle(
-                              color: Colors.grey.shade900,
-                              fontSize: 17,
-                              fontWeight: FontWeight.w300,
-                            ),
-                          ),
-                        ],
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.normal,
-                          color: Colors.grey.shade900,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Text("LOGO")
-              ],
-            ),
-          ),
-          Container(
-            height: Get.size.height / 2,
-            width: Get.size.width / 1.2,
-            alignment: Alignment.center,
-            child: const Icon(
-              CupertinoIcons.qrcode_viewfinder,
-              size: 250,
-            ),
-          )
-        ],
-      ),
-    );
-  }
 }

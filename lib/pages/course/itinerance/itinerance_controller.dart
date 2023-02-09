@@ -10,6 +10,7 @@ class ItineranceController extends GetxController {
   Future<List> getItinerance(String depart, String arrive) async {
     Response rep = await requete.getE("itinerances/all/$depart/$arrive");
     if (rep.isOk) {
+      print(rep.body);
       return rep.body;
     } else {
       return [];
