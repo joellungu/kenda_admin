@@ -66,7 +66,7 @@ class _CourseItem extends State<CourseItem> {
           Container(
             alignment: Alignment.center,
             child: Text(
-              "${widget.data['lieuDepart']}",
+              "${widget.data['troncons']}",
               style: TextStyle(
                 fontSize: 17,
                 fontWeight: FontWeight.w900,
@@ -75,38 +75,23 @@ class _CourseItem extends State<CourseItem> {
             ),
             // color: Colors.green,
           ),
-          const Padding(
-            padding: EdgeInsets.only(
-              top: 0,
-              left: 10,
-              right: 10,
-            ),
-            child: Align(
-              alignment: Alignment.topCenter,
-              child: Icon(
-                Icons.arrow_forward,
-                size: 13,
-                color: Colors.black,
-              ),
-            ),
-          ),
-          Container(
-            alignment: Alignment.center,
-            //color: Colors.green,
-            child: Text(
-              "${widget.data['lieuArrive']} /${widget.data['bus']['nom']}",
-              style: TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.w900,
-                color: Colors.grey.shade900,
-              ),
-            ),
-          ),
+          // Container(
+          //   alignment: Alignment.center,
+          //   //color: Colors.green,
+          //   child: Text(
+          //     "/${widget.data['bus']['nom']}",
+          //     style: TextStyle(
+          //       fontSize: 17,
+          //       fontWeight: FontWeight.w900,
+          //       color: Colors.grey.shade900,
+          //     ),
+          //   ),
+          // ),
         ],
       ),
       subtitle: RichText(
         text: TextSpan(
-          text: "${widget.data['heureDepart']}".replaceAll(" ", "  à  "),
+          text: "${widget.data['heureDepart']}".replaceAll(" ", "  De  "),
           style: TextStyle(
             color: Colors.black,
             fontSize: 15,

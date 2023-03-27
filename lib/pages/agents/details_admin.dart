@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kenda_admin/pages/agents/agent_controller.dart';
 
-class DetailsAgent extends StatelessWidget {
+class DetailsAdmin extends StatelessWidget {
   Map e;
-  bool affiche;
-  DetailsAgent(this.e, this.affiche) {
+  DetailsAdmin(this.e) {
     print(e);
   }
   AgentController agentController = Get.find();
@@ -18,155 +17,86 @@ class DetailsAgent extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Expanded(
-              flex: 1,
-              child: SwitchListTile(
-                title: Text("Status"),
-                onChanged: (ee) {
-                  e["actif"] = !e["actif"];
-                  Get.dialog(
-                    const Center(
-                      child: SizedBox(
-                        height: 40,
-                        width: 40,
-                        child: CircularProgressIndicator(),
-                      ),
-                    ),
-                  );
-                  agentController.putDataAgent(e);
-                },
-                value: e["actif"],
-              ),
-            ),
+            // Expanded(
+            //   flex: 1,
+            //   child: SwitchListTile(
+            //     title: Text("Status"),
+            //     onChanged: (e) {},
+            //     value: true,
+            //   ),
+            // ),
           ],
         ),
         ListTile(
           title: Text("Nom"),
           subtitle: Text(e["nom"]),
-          trailing: IconButton(
-            icon: Icon(Icons.edit),
-            onPressed: () {
-              var nom = TextEditingController();
-              //
-              modifierInfo(e, context, nom, "nom");
-            },
-          ),
+          // trailing: IconButton(
+          //   icon: Icon(Icons.edit),
+          //   onPressed: () {
+          //     var nom = TextEditingController();
+          //     //
+          //     modifierInfo(e, context, nom, "nom");
+          //   },
+          // ),
         ),
         ListTile(
-          title: Text("Postnom"),
-          subtitle: Text(e["postnom"]),
+          title: Text("adresse"),
+          subtitle: Text(e["adresse"]),
           trailing: IconButton(
             icon: Icon(Icons.edit),
             onPressed: () {
               var postnom = TextEditingController();
               //
-              modifierInfo(e, context, postnom, "postnom");
+              modifierInfo(e, context, postnom, "adresse");
             },
           ),
         ),
         ListTile(
-          title: Text("Prenom"),
-          subtitle: Text(e["prenom"]),
+          title: Text("telephone"),
+          subtitle: Text(e["telephone"]),
           trailing: IconButton(
             icon: Icon(Icons.edit),
             onPressed: () {
               var prenom = TextEditingController();
               //
-              modifierInfo(e, context, prenom, "prenom");
+              modifierInfo(e, context, prenom, "telephone");
             },
           ),
         ),
         ListTile(
-          title: Text("Téléphone"),
-          subtitle: Text("${e["numero"]}"),
+          title: Text("email"),
+          subtitle: Text("${e["email"]}"),
           trailing: IconButton(
             icon: Icon(Icons.edit),
             onPressed: () {
               var numero = TextEditingController();
               //
-              modifierInfo(e, context, numero, "numero");
+              modifierInfo(e, context, numero, "email");
             },
           ),
         ),
         ListTile(
-          title: Text("Email"),
-          subtitle: Text(e["email"]),
+          title: Text("motdepasse"),
+          subtitle: Text(e["motdepasse"]),
           trailing: IconButton(
             icon: Icon(Icons.edit),
             onPressed: () {
               var email = TextEditingController();
               //
-              modifierInfo(e, context, email, "email");
+              modifierInfo(e, context, email, "motdepasse");
             },
           ),
         ),
         ListTile(
-          title: Text("Adresse"),
-          subtitle: Text(e["adresse"]),
+          title: Text("logo"),
+          subtitle: Text(e["logo"]),
           trailing: IconButton(
             icon: Icon(Icons.edit),
             onPressed: () {
               var adresse = TextEditingController();
               //
-              modifierInfo(e, context, adresse, "adresse");
+              modifierInfo(e, context, adresse, "logo");
             },
-          ),
-        ),
-        ListTile(
-          title: Text("Role"),
-          subtitle: Text(e["roletitre"]),
-          trailing: IconButton(
-            icon: Icon(Icons.edit),
-            onPressed: () {},
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.only(right: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              affiche
-                  ? InkWell(
-                      onTap: () {
-                        Get.dialog(
-                          const Center(
-                            child: SizedBox(
-                              height: 40,
-                              width: 40,
-                              child: CircularProgressIndicator(),
-                            ),
-                          ),
-                        );
-                        agentController.supprimer("${e["id"]}");
-                      },
-                      child: Container(
-                        height: 40,
-                        width: 150,
-                        alignment: Alignment.center,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Text(
-                              "Supprimer",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Icon(
-                              Icons.delete,
-                              color: Colors.white,
-                            )
-                          ],
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.red.shade700,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                    )
-                  : Container(),
-            ],
           ),
         ),
       ],
@@ -230,7 +160,7 @@ class DetailsAgent extends StatelessWidget {
                             ),
                           ),
                         );
-                        agentController.putDataAgent(e);
+                        agentController.putDataAdmin(e);
                         //Mise ) jour ici...
                       },
                       child: Padding(

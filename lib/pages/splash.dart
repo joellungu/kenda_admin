@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:kenda_admin/pages/application/application_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:kenda_admin/widgets/radial.dart';
+import 'admin/admin.dart';
 import 'agents/agent_controller.dart';
 import 'application/application.dart';
 import 'bus/bus_controller.dart';
@@ -11,6 +12,9 @@ import 'course/historiques/historique_controller.dart';
 import 'course/itinerance/itinerance_controller.dart';
 import 'course/itinerance/lieu_controller.dart';
 import 'course/nouvelle_course/nouvelle_course_controller.dart';
+import 'course/rapports/rapport_controller.dart';
+import 'login/login.dart';
+import 'login/login_controller.dart';
 
 class Splash extends StatelessWidget {
   //
@@ -24,11 +28,14 @@ class Splash extends StatelessWidget {
   NouvelleCourseController nouvelleCourseController =
       Get.put(NouvelleCourseController());
   HistoriqueController historiqueController = Get.put(HistoriqueController());
+  RapportController rapportController = Get.put(RapportController());
+  LoginController loginController = Get.put(LoginController());
   //
   Splash() {
     Timer(const Duration(seconds: 3), () {
-      Get.off(Application());
-      //Get.off(Radial());
+      //Get.off(Login());
+      //Get.off(Application());
+      Get.off(Admin());
     });
   }
   @override

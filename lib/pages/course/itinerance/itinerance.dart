@@ -28,6 +28,13 @@ class _Itenerance extends State<Itenerance> {
   String jour = "", mois = "", annee = "";
   //
   String nombreP = '1';
+  List liste = []; //box.read("Itinerance") ?? [];
+  getIts() async {
+    liste = await itineranceController.getAllItinerancesSave();
+    liste.forEach((element) {
+      itineranceController.listeResumer.add(element['nom']);
+    });
+  }
 
   // List of items in our dropdown menu
   var items = [
@@ -59,7 +66,8 @@ class _Itenerance extends State<Itenerance> {
   Widget build(BuildContext context) {
     //
     var box = GetStorage();
-    List liste = box.read("Itinerance") ?? [];
+    //
+    getIts();
     //
     return Container(
       color: Colors.indigo.shade900, // Status bar color
@@ -80,7 +88,7 @@ class _Itenerance extends State<Itenerance> {
                 pinned: true,
                 snap: false,
                 floating: false,
-                expandedHeight: Get.size.height / 3.5,
+                expandedHeight: Get.size.height / 3.2,
                 flexibleSpace: FlexibleSpaceBar(
                   expandedTitleScale: 2,
                   background: Stack(
@@ -464,26 +472,38 @@ class _Itenerance extends State<Itenerance> {
                   ),
                 ),
               ),
-              SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (BuildContext context, int index) {
-                    return ListTile(
-                      onTap: () {
-                        //
-                        Get.to(ItineranceDetails(liste[index], index, this));
-                        //
-                      },
-                      leading: Icon(Icons.directions_walk),
-                      //const Icon(CupertinoIcons.doc_append),
-                      title: Text("${liste[index]['titre']}"),
-                      subtitle: Text("Arrets ${liste[index]['liste'].length}"),
-                      trailing: const Icon(
-                        Icons.arrow_forward_ios,
-                        size: 15,
-                      ),
-                    );
-                  },
-                  childCount: liste.length,
+              Obx(
+                () => SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (BuildContext context, int index) {
+                      return ListTile(
+                        onTap: () {
+                          //
+                          List ll = [];
+                          liste.forEach((element) {
+                            if (element['nom'] ==
+                                "${itineranceController.listeResumer.elementAt(index)}") {
+                              ll.add(element);
+                            }
+                          });
+                          //
+                          Get.to(ItineranceDetails(ll, index, this,
+                              "${itineranceController.listeResumer.elementAt(index)}"));
+                          //
+                        },
+                        leading: Icon(Icons.directions_walk),
+                        //const Icon(CupertinoIcons.doc_append),
+                        title: Text(
+                            "${itineranceController.listeResumer.elementAt(index)}"),
+                        //subtitle: Text("Arrets ${liste[index]}"),
+                        trailing: const Icon(
+                          Icons.arrow_forward_ios,
+                          size: 15,
+                        ),
+                      );
+                    },
+                    childCount: itineranceController.listeResumer.length,
+                  ),
                 ),
               ),
               const SliverToBoxAdapter(

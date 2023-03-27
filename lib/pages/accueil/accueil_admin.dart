@@ -7,14 +7,14 @@ import 'package:kenda_admin/pages/course/itinerance/itinerance.dart';
 import 'package:kenda_admin/pages/course/rapports/rapport.dart';
 import '../regularisation/regularisation.dart';
 
-class Accueil extends StatefulWidget {
+class AccueilAdmin extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return _Accueil();
+    return _AccueilAdmin();
   }
 }
 
-class _Accueil extends State<Accueil> {
+class _AccueilAdmin extends State<AccueilAdmin> {
   int page = 0;
   @override
   Widget build(BuildContext context) {
@@ -44,14 +44,14 @@ class _Accueil extends State<Accueil> {
           ),
           BottomNavigationBarItem(
             icon: Icon(CupertinoIcons.location),
-            label: "Itineraires",
+            label: "Plus",
           ),
           BottomNavigationBarItem(
             icon: Icon(CupertinoIcons.bus),
             label: "Bus",
           ),
           BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.person_3),
+            icon: Icon(CupertinoIcons.profile_circled),
             label: "Agents",
           ),
         ],

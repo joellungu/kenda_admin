@@ -125,6 +125,7 @@ class FormulaireAgent extends StatelessWidget {
                         borderRadius: BorderRadius.circular(5),
                       ),
                       prefixIcon: const Icon(Icons.phone),
+                      prefix: const Text("243 "),
                       hintText: 'Téléphone'.tr,
                       labelText: 'Téléphone'.tr,
                     ),
@@ -227,6 +228,10 @@ class FormulaireAgent extends StatelessWidget {
                                     child: Text("Vendeur"),
                                     value: 4,
                                   ),
+                                  DropdownMenuItem(
+                                    child: Text("gestionneur"),
+                                    value: 5,
+                                  ),
                                 ],
                                 onChanged: (e) {
                                   c.value = e as int;
@@ -244,7 +249,7 @@ class FormulaireAgent extends StatelessWidget {
                         ),
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -268,6 +273,7 @@ class FormulaireAgent extends StatelessWidget {
                     "Receveur",
                     "Embarqueur",
                     "Vendeur",
+                    "gestionneur",
                   ][c.value - 1],
                   "actif": true,
                 };

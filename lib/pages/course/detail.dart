@@ -29,16 +29,17 @@ class _Detail extends State<Detail> {
     // TODO: implement initState
     super.initState();
     //
-    List l = widget.e['troncons'] ?? [];
-    Set listTitre = Set();
+    print(widget.e);
+    // List l = widget.e['troncons'] ?? [];
+    //Set listTitre = Set();
     //
-    l.forEach((element) {
-      if (listTitre.add(element['arretArrive']['nom'])) {
-        arrs++;
-      } else if (listTitre.add(element['arretDepart']['nom'])) {
-        arrs++;
-      }
-    });
+    // l.forEach((element) {
+    //   if (listTitre.add(element['arretArrive']['nom'])) {
+    //     arrs++;
+    //   } else if (listTitre.add(element['arretDepart']['nom'])) {
+    //     arrs++;
+    //   }
+    // });
   }
 
   @override
@@ -87,7 +88,7 @@ class _Detail extends State<Detail> {
                               child: Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  "${widget.e['provinceDepart']}, ${widget.e['lieuDepart']}",
+                                  "${widget.e['troncons']}",
                                 ),
                               ),
                             ),
@@ -95,8 +96,8 @@ class _Detail extends State<Detail> {
                               padding: EdgeInsets.only(left: 20),
                               child: Align(
                                 alignment: Alignment.centerLeft,
-                                child: Text(
-                                    "${widget.e['provinceArrive']}, ${widget.e['lieuArrive']}"),
+                                //child: Text(
+                                //  "${widget.e['provinceArrive']}, ${widget.e['lieuArrive']}"),
                               ),
                             ),
                           ],
@@ -129,7 +130,15 @@ class _Detail extends State<Detail> {
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          "Départ : ${getDateDepart("${widget.e['heureDepart']}")}",
+                          "Départ : ${[
+                            "Lundi",
+                            "Mardi",
+                            "Mercredi",
+                            "Jeudi",
+                            "Vendredi",
+                            "Samedi",
+                            "Dimanche"
+                          ][widget.e['jourDepart']]}",
                           //"Départ : dim. 4 déc",
                           style: TextStyle(
                             color: Colors.grey.shade700,
@@ -220,7 +229,7 @@ class _Detail extends State<Detail> {
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          "Durée : ${getDuree('${widget.e['heureDepart']}', '${widget.e['heureArrive']}')}",
+                          "Durée : ${getDuree('${widget.e['heureDepart']}', '${widget.e['heureArrive']}', widget.e['nombreJours'])}",
                           style: TextStyle(
                             color: Colors.grey.shade700,
                           ),
@@ -266,13 +275,21 @@ class _Detail extends State<Detail> {
                     ),
                     ListTile(
                       onTap: () {
+                        /*
+                        getIts() async {
+                          liste = await itineranceController.getAllItinerancesSave();
+                          liste.forEach((element) {
+                            itineranceController.listeResumer.add(element['nom']);
+                          });
+                        }
+                        */
                         Get.to(
                           ArretsDetails(widget.e['troncons'], 0, this),
                         );
                       },
                       leading: Icon(Icons.location_on_outlined),
                       title: Text("Arrets"),
-                      subtitle: Text("$arrs arrets"),
+                      //subtitle: Text("$arrs arrets"),
                       trailing: Icon(
                         Icons.arrow_forward_ios,
                         size: 15,
@@ -282,9 +299,9 @@ class _Detail extends State<Detail> {
                       onTap: () {
                         Get.to(Plus(widget.e));
                       },
-                      leading: Icon(Icons.info_outline),
-                      title: Text("Plus"),
-                      subtitle: Text("..."),
+                      leading: Icon(CupertinoIcons.speaker_zzz),
+                      title: Text("Rapports"),
+                      //subtitle: Text("..."),
                       trailing: Icon(
                         Icons.arrow_forward_ios,
                         size: 15,
@@ -416,7 +433,7 @@ class _Detail extends State<Detail> {
     );
   }
 
-  String getDateDepart(String date) {
+  String getDateDeparts(String date) {
     int year = int.parse(date.split(" ")[0].split("-")[0]);
     int month = int.parse(date.split(" ")[0].split("-")[1]);
     int day = int.parse(date.split(" ")[0].split("-")[2]);
@@ -443,27 +460,17 @@ class _Detail extends State<Detail> {
     return "${jours[d.weekday]} $day ${mois[month]}";
   }
 
-  String getDuree(String dateDepart, String dateArrive) {
-    int year1 = int.parse(dateDepart.split(" ")[0].split("-")[0]);
-    int month1 = int.parse(dateDepart.split(" ")[0].split("-")[1]);
-    int day1 = int.parse(dateDepart.split(" ")[0].split("-")[2]);
+  String getDuree(String heureDepart, String heureArrive, int nombreJours) {
     //
-    int heure1 = int.parse(dateDepart.split(" ")[1].split(":")[1]);
-    int min1 = int.parse(dateDepart.split(" ")[1].split(":")[2]);
-    DateTime d1 = DateTime(year1, month1, day1, heure1, min1);
-    //
-    int year2 = int.parse(dateArrive.split(" ")[0].split("-")[0]);
-    int month2 = int.parse(dateArrive.split(" ")[0].split("-")[1]);
-    int day2 = int.parse(dateArrive.split(" ")[0].split("-")[2]);
-    //
-    int heure2 = int.parse(dateArrive.split(" ")[1].split(":")[1]);
-    int min2 = int.parse(dateArrive.split(" ")[1].split(":")[2]);
-    DateTime d2 = DateTime(year2, month2, day2, heure2, min2);
+    DateTime d1 = DateTime(0, 1, 1, int.parse(heureDepart.split(":")[0]),
+        int.parse(heureDepart.split(":")[1]));
+    DateTime d2 = DateTime(0, 1, 1, int.parse(heureArrive.split(":")[0]),
+        int.parse(heureArrive.split(":")[1]));
     //
     Duration heure = d2.difference(d1);
     //DateUtils.getDaysInMonth(widget.annee, widget.mois);
     //
-    return "${heure.inHours} h";
+    return "${nombreJours == 1 ? heure.inHours : '$nombreJours J et ${heure.inHours}'} h";
   }
 
   //

@@ -60,4 +60,33 @@ class AgentController extends GetxController with StateMixin<List> {
       );
     }
   }
+
+  putDataAgent(Map e) async {
+    Response rep = await requete.putE("agents/${e['id']}", e);
+    if (rep.isOk) {
+      //
+
+      Get.back();
+      Get.back();
+      Get.snackbar("Succès", "Mise à jour reussi.");
+    } else {
+      //
+      Get.back();
+      Get.snackbar("Erreur", "Mise à jour non abouti.");
+    }
+  }
+
+  putDataAdmin(Map e) async {
+    Response rep = await requete.putE("partenaires/${e['id']}", e);
+    if (rep.isOk) {
+      //
+      Get.snackbar("Succès", "Mise à jour reussi.");
+      Get.back();
+      Get.back();
+    } else {
+      //
+      Get.snackbar("Erreur", "Mise à jour non abouti.");
+      Get.back();
+    }
+  }
 }

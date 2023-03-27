@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:kenda_admin/pages/course/itinerance/itinerance_controller.dart';
 import 'package:random_string/random_string.dart';
 
 class NouvelleItinerance extends StatefulWidget {
@@ -160,7 +161,7 @@ class _NouvelleItinerance extends State<NouvelleItinerance> {
             ),
           ),
           InkWell(
-            onTap: () {
+            onTap: () async {
               Get.dialog(
                 const Center(
                   child: SizedBox(
@@ -173,29 +174,55 @@ class _NouvelleItinerance extends State<NouvelleItinerance> {
               //
               var box = GetStorage();
               List l = [];
+              List it = [];
               Map r = {};
               widget.l.forEach((e) {
                 if (e['active']) {
+                  Map a = {};
+                  //
+                  a['idPartenaire'] = "1"; //Le id du groupe
+                  a['nom'] = "${widget.e['depart']} à ${widget.e['arrive']}";
+                  a['aaProvince'] = e['arretArrive']['province'];
+                  a['aaLieu'] = e['arretArrive']['nom'];
+                  a['aaLatitude'] = e['arretArrive']['latitude'];
+                  a['aaLongitude'] = e['arretArrive']['longitude'];
+                  a['adProvince'] = e['arretDepart']['province'];
+                  a['adLieu'] = e['arretDepart']['nom'];
+                  a['adLatitude'] = e['arretDepart']['latitude'];
+                  a['adLongitude'] = e['arretDepart']['longitude'];
+                  a['prix'] = e['prix'];
+                  a['active'] = true;
+                  //
+                  it.add(a);
+                  //
+                  print(e);
                   l.add(e);
                 }
               });
-              r["titre"] = "${widget.e['depart']} -> ${widget.e['arrive']}";
-              r["liste"] = l;
-
-              List listeFinal = box.read("Itinerance") ?? [];
-              listeFinal.add(r);
-
-              box.write("Itinerance", listeFinal);
-              Get.back();
-              Get.back();
-              Get.snackbar(
-                "Effectué",
-                "Enregistrement éffectué avec succès",
-                colorText: Colors.white,
-                snackStyle: SnackStyle.GROUNDED,
-              );
-              widget.state.setState(() {});
               //
+              ItineranceController itineranceController = Get.find();
+              bool b = await itineranceController.setItinerance(it);
+              if (b) {
+                // r["titre"] = "${widget.e['depart']} -> ${widget.e['arrive']}";
+                // r["liste"] = l;
+
+                // List listeFinal = box.read("Itinerance") ?? [];
+                // listeFinal.add(r);
+
+                // box.write("Itinerance", listeFinal);
+                Get.back();
+                Get.back();
+                Get.snackbar(
+                  "Effectué",
+                  "Enregistrement éffectué avec succès",
+                  colorText: Colors.white,
+                  snackStyle: SnackStyle.GROUNDED,
+                );
+                widget.state.setState(() {});
+              } else {
+                Get.snackbar("Erreur",
+                    "Un problème est survenu lors de l'enregistrement.");
+              }
             },
             child: Padding(
               padding: const EdgeInsets.only(

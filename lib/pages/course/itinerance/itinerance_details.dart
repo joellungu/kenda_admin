@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:kenda_admin/pages/course/itinerance/itinerance_controller.dart';
 
 class ItineranceDetails extends StatefulWidget {
   int index;
-  Map e;
+  List e;
+  String nom;
   State state;
-  ItineranceDetails(this.e, this.index, this.state);
+  ItineranceDetails(this.e, this.index, this.state, this.nom);
   @override
   State<StatefulWidget> createState() {
     return _ItineranceDetails();
@@ -15,10 +17,12 @@ class ItineranceDetails extends StatefulWidget {
 
 class _ItineranceDetails extends State<ItineranceDetails> {
   List ll = [];
+  ItineranceController itineranceController = Get.find();
+  //
   @override
   void initState() {
     //
-    ll = widget.e['liste'];
+    ll = widget.e;
     //
     super.initState();
   }
@@ -52,7 +56,7 @@ class _ItineranceDetails extends State<ItineranceDetails> {
                       children: [
                         Align(
                           alignment: Alignment.centerLeft,
-                          child: Text("${widget.e['titre']}"),
+                          child: Text(widget.nom),
                         ),
                       ],
                     ),
@@ -71,6 +75,7 @@ class _ItineranceDetails extends State<ItineranceDetails> {
               ll.length,
               (index) {
                 Map e = ll[index];
+                var p = "${e['prix']}";
                 TextEditingController text =
                     TextEditingController(text: "${e['prix']}");
                 return Card(
@@ -93,7 +98,7 @@ class _ItineranceDetails extends State<ItineranceDetails> {
                               Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  "${e['arretDepart']['nom']}",
+                                  "${e['adLieu']}",
                                   style: const TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.normal,
@@ -106,7 +111,7 @@ class _ItineranceDetails extends State<ItineranceDetails> {
                               Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  "${e['arretArrive']['nom']}",
+                                  "${e['aaLieu']}",
                                   style: const TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.normal,
@@ -119,7 +124,7 @@ class _ItineranceDetails extends State<ItineranceDetails> {
                         Expanded(
                           flex: 4,
                           child: TextField(
-                            controller: text,
+                            //controller: text,
                             enabled: e['active'],
                             keyboardType: TextInputType.number,
                             onChanged: (tt) {
@@ -130,7 +135,9 @@ class _ItineranceDetails extends State<ItineranceDetails> {
                               });
                             },
                             decoration: InputDecoration(
-                              suffix: Text("CDF"),
+                              suffix: const Text("CDF"),
+                              hintText: p,
+                              label: Text(p),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                                 borderSide: const BorderSide(
@@ -164,7 +171,7 @@ class _ItineranceDetails extends State<ItineranceDetails> {
               Expanded(
                 flex: 4,
                 child: InkWell(
-                  onTap: () {
+                  onTap: () async {
                     Get.dialog(
                       const Center(
                         child: SizedBox(
@@ -183,24 +190,37 @@ class _ItineranceDetails extends State<ItineranceDetails> {
                         l.add(e);
                       }
                     });
-                    r["titre"] = "${widget.e['titre']}";
-                    r["liste"] = l;
+                    bool b = await itineranceController.updateItinerance(l);
+                    if (b) {
+                      // r["titre"] = widget.nom;
+                      // r["liste"] = l;
 
-                    List listeFinal = box.read("Itinerance") ?? [];
-                    listeFinal.removeAt(widget.index);
-                    listeFinal.add(r);
+                      itineranceController.listeResumer.clear();
+                      List liste =
+                          await itineranceController.getAllItinerancesSave();
+                      liste.forEach((element) {
+                        itineranceController.listeResumer.add(element['nom']);
+                      });
 
-                    box.write("Itinerance", listeFinal);
-                    Get.back();
-                    Get.back();
-                    Get.snackbar(
-                      "Effectué",
-                      "Enregistrement éffectué avec succès",
-                      colorText: Colors.white,
-                      snackStyle: SnackStyle.GROUNDED,
-                    );
-                    widget.state.setState(() {});
-                    //
+                      // List listeFinal = box.read("Itinerance") ?? [];
+                      // listeFinal.removeAt(widget.index);
+                      // listeFinal.add(r);
+
+                      // box.write("Itinerance", listeFinal);
+                      Get.back();
+                      Get.back();
+                      Get.snackbar(
+                        "Effectué",
+                        "Mise à jour éffectué avec succès",
+                        colorText: Colors.white,
+                        snackStyle: SnackStyle.GROUNDED,
+                      );
+                      widget.state.setState(() {});
+                      //
+                    } else {
+                      Get.snackbar("Erreur",
+                          "Un problème est survenu lors de la mise à jour.");
+                    }
                   },
                   child: Padding(
                     padding: const EdgeInsets.only(
@@ -238,13 +258,13 @@ class _ItineranceDetails extends State<ItineranceDetails> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 10,
               ),
               Expanded(
                 flex: 4,
                 child: InkWell(
-                  onTap: () {
+                  onTap: () async {
                     Get.dialog(
                       const Center(
                         child: SizedBox(
@@ -255,22 +275,34 @@ class _ItineranceDetails extends State<ItineranceDetails> {
                       ),
                     );
                     //
-                    var box = GetStorage();
+                    bool b =
+                        await itineranceController.deleteItinerance(widget.e);
+                    if (b) {
+                      // var box = GetStorage();
+                      itineranceController.listeResumer.clear();
+                      List liste =
+                          await itineranceController.getAllItinerancesSave();
+                      liste.forEach((element) {
+                        itineranceController.listeResumer.add(element['nom']);
+                      });
+                      // List listeFinal = box.read("Itinerance") ?? [];
+                      // listeFinal.removeAt(widget.index);
+                      // //listeFinal.add(listeFinal);
 
-                    List listeFinal = box.read("Itinerance") ?? [];
-                    listeFinal.removeAt(widget.index);
-                    //listeFinal.add(listeFinal);
-
-                    box.write("Itinerance", listeFinal);
-                    Get.back();
-                    Get.back();
-                    Get.snackbar(
-                      "Effectué",
-                      "Enregistrement éffectué avec succès",
-                      colorText: Colors.white,
-                      snackStyle: SnackStyle.GROUNDED,
-                    );
-                    widget.state.setState(() {});
+                      // box.write("Itinerance", listeFinal);
+                      Get.back();
+                      Get.back();
+                      Get.snackbar(
+                        "Effectué",
+                        "Suppression éffectué avec succès",
+                        colorText: Colors.white,
+                        snackStyle: SnackStyle.GROUNDED,
+                      );
+                      widget.state.setState(() {});
+                    } else {
+                      Get.snackbar("Erreur",
+                          "Un problème est survenu lors de la suppression.");
+                    }
                     //
                   },
                   child: Padding(

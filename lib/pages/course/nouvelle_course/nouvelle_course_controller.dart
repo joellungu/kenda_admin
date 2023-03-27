@@ -13,9 +13,15 @@ class NouvelleCourseController extends GetxController {
       //
       print(rep.statusCode);
       print(rep.body);
+
+      Get.back();
+      Get.snackbar("Horaire", "Votre horaire a bien été enregistré");
     } else {
       print(rep.statusCode);
       print(rep.body);
+      Get.back();
+      Get.snackbar("Horaire",
+          "Un problème est survenu lors de l'enregistrement code: ${rep.statusCode}");
     }
   }
 }

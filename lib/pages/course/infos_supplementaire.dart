@@ -97,8 +97,7 @@ class InfoSupplementaire extends StatelessWidget {
                         text: "${details!['bus']['nom']}\n", //Transco Métro
                         children: [
                           TextSpan(
-                            text:
-                                "vers ${details!['provinceArrive']} à ${details!['lieuArrive']}",
+                            text: "vers ${details!['troncons']}",
                             style: TextStyle(
                               color: Colors.grey.shade900,
                               fontSize: 17,
@@ -149,12 +148,14 @@ class InfoSupplementaire extends StatelessWidget {
                             "${details!['receveur']['nom']} ${details!['receveur']['postnom']} ${details!['receveur']['prenom']}"),
                         subtitle: Text("Receptionniste"),
                       ),
-                      ListTile(
-                        leading: Icon(CupertinoIcons.profile_circled),
-                        title: Text(
-                            "${details!['embarqueur']['nom']} ${details!['embarqueur']['postnom']} ${details!['embarqueur']['prenom']}"),
-                        subtitle: Text("embarqueur"),
-                      ),
+                      details!['embarqueur'] != null
+                          ? ListTile(
+                              leading: Icon(CupertinoIcons.profile_circled),
+                              title: Text(
+                                  "${details!['embarqueur']['nom']} ${details!['embarqueur']['postnom']} ${details!['embarqueur']['prenom']}"),
+                              subtitle: Text("embarqueur"),
+                            )
+                          : Container(),
                       Divider(),
                       ListTile(
                         title: Text(

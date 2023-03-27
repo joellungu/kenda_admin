@@ -6,6 +6,7 @@ import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:kenda_admin/pages/agents/agent_controller.dart';
 import 'package:kenda_admin/pages/bus/bus_controller.dart';
+import 'package:kenda_admin/pages/course/itinerance/itinerance_controller.dart';
 import 'package:kenda_admin/widgets/loader.dart';
 import 'nouvelle_course_controller.dart';
 
@@ -15,13 +16,13 @@ String? idArretArrive;
 String? provinceDepart;
 String? provinceArrive;
 String? arrive;
-List _troncons = [];
+//List _troncons = [];
 RxList _equipages = [].obs;
 RxMap bus = {}.obs;
 RxMap chauffeur = {}.obs;
 RxMap receveur = {}.obs;
 RxMap embarqueur = {}.obs;
-RxMap itinerance = {}.obs;
+RxString itinerance = "".obs;
 TextEditingController _reference = TextEditingController();
 TextEditingController __datedepart = TextEditingController();
 TextEditingController __heuredepart = TextEditingController();
@@ -31,6 +32,8 @@ String _datedepart = "";
 String _heuredepart = "";
 String _datearrive = "";
 String _heurearrive = "";
+RxInt jour = 1.obs;
+RxInt nombreJours = 1.obs;
 
 class NouvelleCours extends StatefulWidget {
   @override
@@ -112,19 +115,15 @@ class _NouvelleCours extends State<NouvelleCours> {
       body: vue,
       bottomNavigationBar: InkWell(
         onTap: () {
-          if (_troncons.isEmpty) {
+          if (itinerance.isEmpty) {
             messageErreur("Veuillez selectionner une itinerance.");
           } else if (bus['id'] == null) {
             messageErreur("Veuillez selectionner un bus.");
           } else if (_reference.text.isEmpty) {
             messageErreur(
                 "Veuillez donner la référence du début de la course.");
-          } else if (_datedepart.isEmpty) {
-            messageErreur("Veuillez selectionner la date de départ.");
           } else if (_heuredepart.isEmpty) {
             messageErreur("Veuillez selectionner l'heure de départ.");
-          } else if (_datearrive.isEmpty) {
-            messageErreur("Veuillez selectionner la date d'arrivée.");
           } else if (_heurearrive.isEmpty) {
             messageErreur("Veuillez selectionner l'heure d'arrivée.");
           } else {
@@ -139,22 +138,6 @@ class _NouvelleCours extends State<NouvelleCours> {
             );
             //
             String prix = "0";
-            print(_troncons.length);
-            _troncons.forEach((element) {
-              if (element['arretArrive']['nom'] == arrive &&
-                  element['arretDepart']['nom'] == depart) {
-                idArretDepart = "${element['arretDepart']['id']}";
-                idArretArrive = "${element['arretArrive']['id']}";
-                prix = "${element['prix']}";
-                //
-                provinceDepart = "${element['arretDepart']['province']}";
-                provinceArrive = "${element['arretArrive']['province']}";
-                print("le prix: ${element['prix']} -- ${element['active']}");
-              } else {
-                print(
-                    "---- le prix: ${element['prix']} -- ${element['active']}");
-              }
-            });
             //
             /**
              * public Timestamp heureArrive;
@@ -170,21 +153,24 @@ class _NouvelleCours extends State<NouvelleCours> {
               "idArretArrive": idArretArrive,
               "chauffeur": chauffeur,
               "receveur": receveur,
-              "embarqueur": embarqueur,
               "arretEnCour": depart,
               "prix": prix,
               "heureDepart": "$_datedepart $_heuredepart",
               "heureArrive": "$_datearrive $_heurearrive",
               "bus": bus,
-              "troncons": _troncons,
+              "jourDepart": jour.value,
+              "nombreJours": nombreJours.value,
+              "troncons": itinerance.value,
               "placeDisponible": bus["capacite"],
               "reference": _reference.text,
               "lieuDepart": depart,
               "provinceDepart": provinceDepart,
               "lieuArrive": arrive,
               "provinceArrive": provinceArrive,
+              "lieuActuel": depart,
               "terminer": false,
             };
+            embarqueur['nom'] == null ? u : u["embarqueur"] = embarqueur;
             print('la avleur u: ${u['troncons']}');
             //
             nouvelleCourseController.creerCourse(u);
@@ -246,32 +232,40 @@ class It extends StatefulWidget {
 }
 
 class _It extends State<It> {
-  RxList liste = [].obs;
+  List liste = [];
+  ItineranceController itineranceController = Get.find();
+  //List liste = []; //box.read("Itinerance") ?? [];
+  getIts() async {
+    liste = await itineranceController.getAllItinerancesSave();
+    liste.forEach((element) {
+      itineranceController.listeResumer.add(element['nom']);
+    });
+  }
+
   RxInt i = (-1).obs;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     //
-    var box = GetStorage();
-    liste.value = box.read("Itinerance") ?? [];
+    getIts();
   }
 
   @override
   Widget build(BuildContext context) {
     return ListView(padding: const EdgeInsets.all(10), children: [
-      itinerance["titre"] != null
+      itinerance.isNotEmpty
           ? ListTile(
               leading: Icon(Icons.directions_walk),
               //const Icon(CupertinoIcons.doc_append),
               title: Text(
-                "${itinerance['titre']}",
+                itinerance.value,
                 style: TextStyle(
                   fontWeight: FontWeight.w900,
                   color: Colors.grey.shade900,
                 ),
               ),
-              subtitle: Text("Arrets ${itinerance['liste'].length}"),
+              //subtitle: Text("Arrets ${itinerance['liste'].length}"),
               trailing: const Icon(
                 Icons.check,
                 color: Colors.green,
@@ -283,41 +277,34 @@ class _It extends State<It> {
         height: 3,
         color: Colors.black,
       ),
-      Column(
-        children: List.generate(liste.length, (index) {
-          return ListTile(
-            onTap: () {
-              //
-              setState(() {
-                i.value = index;
-                itinerance.value = liste[index];
-              });
-              //
-              depart =
-                  "${liste[index]['titre']}".split("->")[0].replaceAll(" ", "");
-              arrive =
-                  "${liste[index]['titre']}".split("->")[1].replaceAll(" ", "");
-              print("depart: $depart --- arrive: $arrive");
-
-              _troncons = liste[index]['liste'];
-
-              print("${liste[index]['liste']}");
-
-              //
-            },
-            leading: Icon(Icons.directions_walk),
-            //const Icon(CupertinoIcons.doc_append),
-            title: Text(
-              "${liste[index]['titre']}",
-              style: TextStyle(
-                fontWeight: FontWeight.w900,
-                color: Colors.grey.shade900,
+      Obx(
+        () => Column(
+          children:
+              List.generate(itineranceController.listeResumer.length, (index) {
+            return ListTile(
+              onTap: () {
+                //
+                setState(() {
+                  itinerance.value =
+                      "${itineranceController.listeResumer.elementAt(index)}";
+                });
+                //
+                //
+              },
+              leading: Icon(Icons.directions_walk),
+              //const Icon(CupertinoIcons.doc_append),
+              title: Text(
+                "${itineranceController.listeResumer.elementAt(index)}",
+                style: TextStyle(
+                  fontWeight: FontWeight.w900,
+                  color: Colors.grey.shade900,
+                ),
               ),
-            ),
-            subtitle: Text("Arrets ${liste[index]['liste'].length}"),
-          );
-        }),
-      )
+              //subtitle: Text("Arrets ${liste[index]['liste'].length}"),
+            );
+          }),
+        ),
+      ),
     ]);
   }
 }
@@ -613,59 +600,88 @@ class _Ref extends State<Ref> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  flex: 5,
+                  child: Text("Jour"),
+                ),
+                Expanded(
+                  flex: 5,
+                  child: Obx(
+                    () => DropdownButtonHideUnderline(
+                      child: DropdownButton(
+                        value: jour.value,
+                        items: List.generate(
+                          7,
+                          (index) => DropdownMenuItem(
+                            value: index + 1,
+                            child: Text([
+                              "Lundi",
+                              "Mardi",
+                              "Mercredi",
+                              "Jeudi",
+                              "Vendredi",
+                              "Samedi",
+                              "Dimanche"
+                            ][index]),
+                          ),
+                        ),
+                        onChanged: (j) {
+                          jour.value = j as int;
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            const Divider(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  flex: 5,
+                  child: Text("Nombre de jour"),
+                ),
+                Expanded(
+                  flex: 5,
+                  child: Obx(
+                    () => DropdownButtonHideUnderline(
+                      child: DropdownButton(
+                        value: nombreJours.value,
+                        items: List.generate(
+                          30,
+                          (index) => DropdownMenuItem(
+                            value: index + 1,
+                            child: Text("${index + 1}"),
+                          ),
+                        ),
+                        onChanged: (j) {
+                          nombreJours.value = j as int;
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            const Divider(),
+            SizedBox(
+              height: 20,
+            ),
             SizedBox(
               height: 70,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Expanded(
-                    flex: 4,
-                    child: Column(
-                      children: [
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text("Date départ"),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: TextField(
-                            controller: __datedepart,
-                            decoration: InputDecoration(
-                              suffixIcon: IconButton(
-                                onPressed: () {
-                                  //
-                                  showDatePicker(
-                                    context: context,
-                                    initialDate: DateTime.now(),
-                                    firstDate: DateTime(2023),
-                                    lastDate: DateTime(2030),
-                                  ).then((d) {
-                                    //yyyy-MM-dd
-                                    int t = d!.day;
-                                    String dd = t < 9 ? "0$t" : "$t";
-                                    _datedepart =
-                                        "${d.year}-${d.month}-${d.day}-$dd";
-                                    __datedepart.text = _datedepart;
-                                    setState(() {});
-                                  });
-                                },
-                                icon: Icon(Icons.calendar_month),
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                  color: Colors.grey,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
                   Expanded(
                     flex: 4,
                     child: Column(
@@ -713,66 +729,6 @@ class _Ref extends State<Ref> {
                       ],
                     ),
                   ),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Divider(),
-            SizedBox(
-              height: 20,
-            ),
-            SizedBox(
-              height: 70,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Expanded(
-                    flex: 4,
-                    child: Column(
-                      children: [
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text("Date arrivée"),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: TextField(
-                            controller: __datearrive,
-                            decoration: InputDecoration(
-                              suffixIcon: IconButton(
-                                onPressed: () {
-                                  //
-                                  showDatePicker(
-                                    context: context,
-                                    initialDate: DateTime.now(),
-                                    firstDate: DateTime(2023),
-                                    lastDate: DateTime(2030),
-                                  ).then((d) {
-                                    //yyyy-MM-dd
-                                    int t = d!.day;
-                                    String dd = t < 9 ? "0$t" : "$t";
-                                    _datearrive =
-                                        "${d.year}-${d.month}-${d.day}-$dd";
-                                    __datearrive.text = _datearrive;
-                                    setState(() {});
-                                  });
-                                },
-                                icon: Icon(Icons.calendar_month),
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                  color: Colors.grey,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
                   SizedBox(
                     width: 10,
                   ),
@@ -805,6 +761,7 @@ class _Ref extends State<Ref> {
                                         : '${h.minute}';
                                     //String ss = h. < 9 ? '0${h.hour}':'${h.hour}';
                                     _heurearrive = "$hh:$mm:00";
+                                    print(_heurearrive);
                                     __heurearrive.text = _heurearrive;
                                     setState(() {});
                                   });
@@ -827,7 +784,7 @@ class _Ref extends State<Ref> {
               ),
             ),
             SizedBox(
-              height: 30,
+              height: 40,
             ),
             Divider(),
             SizedBox(

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:kenda_admin/pages/course/itinerance/itinerance_controller.dart';
 
 class ArretsDetails extends StatefulWidget {
   int index;
-  List e;
+  String e;
   State state;
   ArretsDetails(this.e, this.index, this.state);
   @override
@@ -14,11 +15,21 @@ class ArretsDetails extends StatefulWidget {
 }
 
 class _ArretsDetails extends State<ArretsDetails> {
-  List ll = [];
+  RxList ll = [].obs; //
+  ItineranceController itineranceController = Get.find();
+  //
+  List liste = []; //box.read("Itinerance") ?? [];
+  getIts() async {
+    ll.value = await itineranceController.getTronconsRoute(widget.e);
+    // liste.forEach((element) {
+    //   itineranceController.listeResumer.add(element['nom']);
+    // });
+  }
+
   @override
   void initState() {
     //
-    ll = widget.e;
+    getIts();
     //
     super.initState();
   }
@@ -66,96 +77,93 @@ class _ArretsDetails extends State<ArretsDetails> {
       body: ListView(
         padding: const EdgeInsets.all(10),
         children: [
-          Column(
-            children: List.generate(
-              ll.length,
-              (index) {
-                Map e = ll[index];
-                TextEditingController text =
-                    TextEditingController(text: "${e['prix']}");
-                return Card(
-                  color: Colors.transparent,
-                  elevation: 0,
-                  child: Container(
-                    padding: EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.grey, width: 1),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          flex: 4,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  "${e['arretDepart']['nom']}",
-                                  style: const TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.normal,
+          Obx(
+            () => Column(
+              children: List.generate(
+                ll.length,
+                (index) {
+                  Map e = ll[index];
+                  var p = "${e['prix']}".split(".")[0];
+                  TextEditingController text =
+                      TextEditingController(text: "${e['prix']}");
+                  return Card(
+                    color: Colors.transparent,
+                    elevation: 0,
+                    child: Container(
+                      padding: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: Colors.grey, width: 1),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            flex: 6,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    "Départ: ${e['adLieu']}",
+                                    maxLines: 1,
+                                    style: const TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.normal,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              const Divider(
-                                color: Colors.grey,
-                              ),
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  "${e['arretArrive']['nom']}",
-                                  style: const TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.normal,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          flex: 4,
-                          child: TextField(
-                            controller: text,
-                            enabled: e['active'],
-                            keyboardType: TextInputType.number,
-                            onChanged: (tt) {
-                              //
-                              setState(() {
-                                e['prix'] = tt;
-                                //text.text = "${e['prix']}";
-                              });
-                            },
-                            decoration: InputDecoration(
-                              suffix: Text("CDF"),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
+                                const Divider(
                                   color: Colors.grey,
+                                ),
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    "Arrivé: ${e['aaLieu']}",
+                                    maxLines: 1,
+                                    style: const TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            flex: 4,
+                            child: TextField(
+                              //controller: text,
+
+                              enabled: false, //e['active']
+                              keyboardType: TextInputType.number,
+                              onChanged: (tt) {
+                                //
+                                setState(() {
+                                  e['prix'] = tt;
+                                  //text.text = "${e['prix']}";
+                                });
+                              },
+                              decoration: InputDecoration(
+                                suffix: const Text("CDF"),
+                                hintText: "$p CDF",
+                                label: Text("$p CDF"),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: const BorderSide(
+                                    color: Colors.grey,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                        // Expanded(
-                        //   flex: 2,
-                        //   child: Switch(
-                        //     onChanged: (s) {
-                        //       setState(() {
-                        //         e['active'] = s;
-                        //       });
-                        //     },
-                        //     value: false//e['active'],
-                        //   ),
-                        // )
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
           ),
           // Row(

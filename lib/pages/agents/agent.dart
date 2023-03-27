@@ -2,13 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:kenda_admin/pages/agents/nouvel_agent.dart';
 import 'package:kenda_admin/widgets/loader.dart';
 import 'package:kenda_admin/widgets/modal.dart';
 import 'agent_controller.dart';
+import 'details_admin.dart';
 import 'details_agent.dart';
 
 class Agent extends GetView<AgentController> {
+  var box = GetStorage();
   Agent() {
     controller.load(1);
   }
@@ -32,49 +35,112 @@ class Agent extends GetView<AgentController> {
                     color: Colors.white,
                   ),
                 ),
+                actions: [
+                  IconButton(
+                    onPressed: () {
+                      Map user = box.read("user");
+                      print(user);
+                      if (user["role"] == 5) {
+                        showSimpleModal(DetailsAgent(user, false), context);
+                      } else {
+                        showSimpleModal(DetailsAdmin(user), context);
+                      }
+                    },
+                    icon: Icon(
+                      CupertinoIcons.person,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
                 backgroundColor: Colors.indigo.shade900,
               ),
               body: ListView(
                 children: List.generate(l.length, (index) {
                   Map e = l[index];
-                  return ListTile(
-                    onTap: () {
-                      //
-                      showSimpleModal(DetailsAgent(e), context);
-                      //
-                    },
-                    leading: const Icon(
-                      CupertinoIcons.person,
-                      size: 40,
-                    ),
-                    title: Text(
-                      "${e['nom']} ${e['postnom']} ${e['prenom']}",
-                      style: TextStyle(
-                        //fontSize: 17,
-                        fontWeight: FontWeight.w900,
-                        color: Colors.grey.shade900,
-                      ),
-                    ),
-                    subtitle: Text(
-                      "${e['roletitre']}",
-                      style: TextStyle(
-                        //fontSize: 17,
-                        fontWeight: FontWeight.w900,
-                        color: Colors.grey.shade900,
-                      ),
-                    ),
-                    trailing: e['actif']
-                        ? Icon(
-                            Icons.check,
-                            color: Colors.green.shade900,
-                            size: 15,
-                          )
-                        : Icon(
-                            Icons.close,
-                            color: Colors.red.shade900,
-                            size: 15,
+                  Map user = box.read("user");
+                  if (user['role'] == 5) {
+                    if (e["role"] != 5) {
+                      return ListTile(
+                        onTap: () {
+                          //
+                          showSimpleModal(DetailsAgent(e, false), context);
+                          //
+                        },
+                        leading: const Icon(
+                          CupertinoIcons.person,
+                          size: 40,
+                        ),
+                        title: Text(
+                          "${e['nom']} ${e['postnom']} ${e['prenom']}",
+                          style: TextStyle(
+                            //fontSize: 17,
+                            fontWeight: FontWeight.w900,
+                            color: Colors.grey.shade900,
                           ),
-                  );
+                        ),
+                        subtitle: Text(
+                          "${e['roletitre']}",
+                          style: TextStyle(
+                            //fontSize: 17,
+                            fontWeight: FontWeight.w900,
+                            color: Colors.grey.shade900,
+                          ),
+                        ),
+                        trailing: e['actif']
+                            ? Icon(
+                                Icons.check,
+                                color: Colors.green.shade900,
+                                size: 15,
+                              )
+                            : Icon(
+                                Icons.close,
+                                color: Colors.red.shade900,
+                                size: 15,
+                              ),
+                      );
+                    } else {
+                      return Container();
+                    }
+                  } else {
+                    return ListTile(
+                      onTap: () {
+                        //
+                        showSimpleModal(DetailsAgent(e, true), context);
+                        //
+                      },
+                      leading: const Icon(
+                        CupertinoIcons.person,
+                        size: 40,
+                      ),
+                      title: Text(
+                        "${e['nom']} ${e['postnom']} ${e['prenom']}",
+                        style: TextStyle(
+                          //fontSize: 17,
+                          fontWeight: FontWeight.w900,
+                          color: Colors.grey.shade900,
+                        ),
+                      ),
+                      subtitle: Text(
+                        "${e['roletitre']}",
+                        style: TextStyle(
+                          //fontSize: 17,
+                          fontWeight: FontWeight.w900,
+                          color: Colors.grey.shade900,
+                        ),
+                      ),
+                      trailing: e['actif']
+                          ? Icon(
+                              Icons.check,
+                              color: Colors.green.shade900,
+                              size: 15,
+                            )
+                          : Icon(
+                              Icons.close,
+                              color: Colors.red.shade900,
+                              size: 15,
+                            ),
+                    );
+                  }
                 }),
               ),
               floatingActionButton: FloatingActionButton(
