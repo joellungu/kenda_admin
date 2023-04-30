@@ -19,31 +19,32 @@ class _Admin extends State<Admin> {
 
         if (constraints.maxWidth > 700) {
           return Scaffold(
-              appBar: AppBar(
-                centerTitle: false,
-                title: const Text(
-                  "Admin",
-                  style: TextStyle(
-                    color: Colors.white,
+            appBar: AppBar(
+              centerTitle: false,
+              title: const Text(
+                "Admin",
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+              backgroundColor: Colors.indigo.shade900,
+            ),
+            body: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Expanded(
+                  flex: 3,
+                  child: Recherche(),
+                ),
+                Expanded(
+                  flex: 8,
+                  child: Container(
+                    color: Colors.yellow,
                   ),
                 ),
-                backgroundColor: Colors.indigo.shade900,
-              ),
-              body: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Expanded(
-                    flex: 3,
-                    child: Recherche(),
-                  ),
-                  Expanded(
-                    flex: 8,
-                    child: Container(
-                      color: Colors.yellow,
-                    ),
-                  ),
-                ],
-              ));
+              ],
+            ),
+          );
         } else {
           return Scaffold(
             appBar: AppBar(

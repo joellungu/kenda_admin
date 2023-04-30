@@ -57,7 +57,7 @@ class Agent extends GetView<AgentController> {
               body: ListView(
                 children: List.generate(l.length, (index) {
                   Map e = l[index];
-                  Map user = box.read("user");
+                  Map user = box.read("user") ?? {};
                   if (user['role'] == 5) {
                     if (e["role"] != 5) {
                       return ListTile(

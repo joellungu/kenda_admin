@@ -12,6 +12,7 @@ class AgentController extends GetxController with StateMixin<List> {
     );
     if (rep.isOk) {
       //
+      print("La data: ${rep.body}");
       change(rep.body, status: RxStatus.success());
     } else {
       //

@@ -34,8 +34,8 @@ class Splash extends StatelessWidget {
   Splash() {
     Timer(const Duration(seconds: 3), () {
       //Get.off(Login());
-      //Get.off(Application());
-      Get.off(Admin());
+      Get.off(Application());
+      //Get.off(Admin());
     });
   }
   @override
