@@ -180,7 +180,11 @@ class _NouvelleItinerance extends State<NouvelleItinerance> {
                 if (e['active']) {
                   Map a = {};
                   //
-                  a['idPartenaire'] = "1"; //Le id du groupe
+                  var box = GetStorage();
+                  //
+                  Map e = box.read("user");
+                  //
+                  a['idPartenaire'] = e['id']; //Le id du groupe
                   a['nom'] = "${widget.e['depart']} à ${widget.e['arrive']}";
                   a['aaProvince'] = e['arretArrive']['province'];
                   a['aaLieu'] = e['arretArrive']['nom'];

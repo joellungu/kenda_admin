@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 import 'bus_controller.dart';
 
@@ -332,8 +333,12 @@ class FormulaireBus extends StatelessWidget {
           bottomNavigationBar: InkWell(
             onTap: () {
               if (formKey.currentState!.validate()) {
+                //
+                var box = GetStorage();
+                //
+                Map e = box.read("user");
                 Map u = {
-                  "idPartenaire": 1,
+                  "idPartenaire": e['id'],
                   "nom": nom.text,
                   "marque": marque.text,
                   "type": type.text,

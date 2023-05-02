@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kenda_admin/pages/course/course_controller.dart';
 import 'package:kenda_admin/pages/course/detail.dart';
@@ -25,7 +26,11 @@ class _Course extends State<Course> with SingleTickerProviderStateMixin {
     controller = TabController(length: 7, vsync: this);
     super.initState();
     //
-    courseController.getAllCoures(1);
+    var box = GetStorage();
+    //
+    Map e = box.read("user");
+    //
+    courseController.getAllCoures(e['id']);
     //
     controller!.addListener(() {
       print("La valeur: ${controller!.index}");

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 import 'agent_controller.dart';
 
@@ -257,9 +258,13 @@ class FormulaireAgent extends StatelessWidget {
           bottomNavigationBar: InkWell(
             onTap: () {
               if (formKey.currentState!.validate()) {
+                //
+                var box = GetStorage();
+                //
+                Map e = box.read("user");
                 Map u = {
                   //"id": 2,
-                  "idPartenaire": 1,
+                  "idPartenaire": e['id'],
                   "nom": nom.text,
                   "postnom": postnom.text,
                   "prenom": prenom.text,

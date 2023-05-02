@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:kenda_admin/pages/application/application_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:kenda_admin/widgets/radial.dart';
@@ -33,8 +34,18 @@ class Splash extends StatelessWidget {
   //
   Splash() {
     Timer(const Duration(seconds: 3), () {
-      //Get.off(Login());
-      Get.off(Application());
+      //
+      var box = GetStorage();
+      //
+      Map e = box.read("user") ?? {};
+      //
+      if (e['id'] != null) {
+        Get.off(Application());
+      } else {
+        Get.off(Login());
+      }
+
+      //Get.off(Application());
       //Get.off(Admin());
     });
   }

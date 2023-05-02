@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 import 'rapport_controller.dart';
 
@@ -142,9 +143,13 @@ class Rapport extends StatelessWidget {
               if (formKey.currentState!.validate()) {
                 DateTime dateTime = DateTime.now();
                 print("cool");
+                //
+                var box = GetStorage();
+                //
+                Map e = box.read("user");
                 Map u = {
                   //"id": 2,
-                  "idPartenaire": 1,
+                  "idPartenaire": e['id'],
                   "object": object.text,
                   //"titre": titre.text,
                   "contenue": contenue.text,
