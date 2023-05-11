@@ -7,6 +7,7 @@ import 'package:kenda_admin/pages/course/course_controller.dart';
 import 'package:kenda_admin/pages/course/detail.dart';
 import 'package:kenda_admin/widgets/course_item.dart';
 import 'historiques/historique.dart';
+import 'logo.dart';
 import 'nouvelle_course/nouvelle_cours.dart';
 
 class Course extends StatefulWidget {
@@ -57,6 +58,14 @@ class _Course extends State<Course> with SingleTickerProviderStateMixin {
               ),
             ),
             backgroundColor: Colors.indigo.shade900,
+            actions: [
+              // InkWell(
+              //   onTap: () {
+              //     //
+              //   },
+              //   child: Logo(),
+              // )
+            ],
           ),
           body: Column(
             children: [
@@ -133,6 +142,19 @@ class _Course extends State<Course> with SingleTickerProviderStateMixin {
           floatingActionButton: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
+              //
+              FloatingActionButton(
+                tooltip: "",
+                heroTag: "logo",
+                onPressed: () {
+                  //  Get.to(Historique());
+                },
+                backgroundColor: Colors.indigo.shade900,
+                child: Logo(),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
               FloatingActionButton(
                 tooltip: "",
                 heroTag: "history",
@@ -140,12 +162,12 @@ class _Course extends State<Course> with SingleTickerProviderStateMixin {
                   Get.to(Historique());
                 },
                 backgroundColor: Colors.indigo.shade900,
-                child: Icon(
+                child: const Icon(
                   Icons.history,
                   color: Colors.white,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               FloatingActionButton(

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:kenda_admin/pages/bus/bus_controller.dart';
+import 'package:kenda_admin/utils/requetes.dart';
 import 'package:kenda_admin/widgets/loader.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:kenda_admin/widgets/modal.dart';
@@ -9,8 +11,14 @@ import 'details_bus.dart';
 import 'nouveau_bus.dart';
 
 class Bus extends GetView<BusController> {
+  //
+  Requete requete = Requete();
+  //
   Bus() {
-    controller.load(1);
+    var box = GetStorage();
+    //
+    Map e = box.read("user");
+    controller.load(e['id']);
   }
   @override
   Widget build(BuildContext context) {
@@ -45,10 +53,21 @@ class Bus extends GetView<BusController> {
                       showSimpleModal(DetailsBus(e), context);
                       //
                     },
-                    leading: const Icon(
-                      CupertinoIcons.bus,
-                      size: 40,
-                    ),
+                    leading: e['logo'] != null
+                        ? Container(
+                            height: 50,
+                            width: 50,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: NetworkImage(
+                                    "${Requete.url}/bus/bus.png?id=${e['id']}"),
+                              ),
+                            ),
+                          )
+                        : const Icon(
+                            CupertinoIcons.bus,
+                            size: 40,
+                          ),
                     title: Text(
                       "${e['marque']}",
                       style: TextStyle(

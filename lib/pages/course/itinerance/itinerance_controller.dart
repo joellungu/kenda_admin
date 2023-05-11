@@ -1,14 +1,20 @@
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:kenda_admin/utils/requetes.dart';
 
 class ItineranceController extends GetxController {
   RxString arrive = "".obs;
   RxString depart = "".obs;
   //
+  var box = GetStorage();
+  //
+
+  //
   Requete requete = Requete();
   RxSet listeResumer = RxSet(); //box.read("Itinerance") ?? [];
   //
   Future<List> getItinerance(String depart, String arrive) async {
+    Map e = box.read("user");
     Response rep = await requete.getE("itinerances/all/$depart/$arrive");
     if (rep.isOk) {
       print(rep.body);
@@ -21,7 +27,8 @@ class ItineranceController extends GetxController {
   //
   Future<List> getAllItinerancesSave() async {
     listeResumer.cast();
-    Response rep = await requete.getE("itinerances/allsave/1");
+    Map e = box.read("user");
+    Response rep = await requete.getE("itinerances/allsave/${e['id']}");
     if (rep.isOk) {
       print("-----: ${rep.body}");
       return rep.body;
@@ -32,7 +39,8 @@ class ItineranceController extends GetxController {
 
   Future<List> getTronconsRoute(String nom) async {
     listeResumer.cast();
-    Response rep = await requete.getE("itinerances/course/1/$nom");
+    Map e = box.read("user");
+    Response rep = await requete.getE("itinerances/course/${e['id']}/$nom");
     if (rep.isOk) {
       print("-----: ${rep.body}");
       return rep.body;

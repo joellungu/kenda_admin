@@ -13,7 +13,11 @@ import 'details_agent.dart';
 class Agent extends GetView<AgentController> {
   var box = GetStorage();
   Agent() {
-    controller.load(1);
+    var box = GetStorage();
+    //
+    Map e = box.read("user");
+    controller.load(e['id']);
+    //controller.load(1);
   }
   @override
   Widget build(BuildContext context) {

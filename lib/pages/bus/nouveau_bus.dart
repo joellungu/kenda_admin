@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'bus_controller.dart';
 
@@ -17,6 +20,8 @@ class FormulaireBus extends StatelessWidget {
   var caracteristiques = TextEditingController();
   var kilometrage = TextEditingController();
   RxBool climatisation = true.obs;
+  //
+  RxString path = "".obs;
   //
   BusController busController = Get.find();
   //
@@ -45,6 +50,63 @@ class FormulaireBus extends StatelessWidget {
               padding: const EdgeInsets.all(20),
               child: ListView(
                 children: [
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      InkWell(
+                        onTap: () async {
+                          //
+                          final ImagePicker picker = ImagePicker();
+                          //
+                          final XFile? image = await picker.pickImage(
+                              source: ImageSource.gallery);
+                          //setState(() {
+                          if (image != null) {
+                            path.value = image.path;
+                            //
+                          }
+                          //});
+                        },
+                        child: Obx(
+                          () {
+                            if (path.value.isEmpty) {
+                              return Container(
+                                height: 100,
+                                width: 100,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  //color: Colors.red,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: const Icon(
+                                  Icons.photo_camera,
+                                  color: Colors.black,
+                                ),
+                              );
+                            } else {
+                              return Container(
+                                height: 100,
+                                width: 100,
+                                alignment: Alignment.center,
+                                //child: const Icon(Icons.photo_camera),
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image: FileImage(
+                                        File(path.value),
+                                      ),
+                                      fit: BoxFit.contain),
+                                  borderRadius: BorderRadius.circular(25),
+                                ),
+                              );
+                            }
+                          },
+                        ),
+                      )
+                    ],
+                  ),
                   const SizedBox(
                     height: 10,
                   ),
@@ -334,32 +396,34 @@ class FormulaireBus extends StatelessWidget {
             onTap: () {
               if (formKey.currentState!.validate()) {
                 //
-                var box = GetStorage();
-                //
-                Map e = box.read("user");
-                Map u = {
-                  "idPartenaire": e['id'],
-                  "nom": nom.text,
-                  "marque": marque.text,
-                  "type": type.text,
-                  "numeroChassis": numeroChassis.text,
-                  "dateAchat": dateAchat.value,
-                  "dateMiseenservice": dateMiseenservice.value,
-                  "capacite": capacite.text,
-                  "caracteristiques": caracteristiques.text,
-                  "kilometrage": kilometrage.text,
-                  "climatisation": climatisation.value,
-                };
-                Get.dialog(
-                  const Center(
-                    child: SizedBox(
-                      height: 40,
-                      width: 40,
-                      child: CircularProgressIndicator(),
+                if (path.value.isNotEmpty) {
+                  var box = GetStorage();
+                  //
+                  Map e = box.read("user");
+                  Map u = {
+                    "idPartenaire": e['id'],
+                    "nom": nom.text,
+                    "marque": marque.text,
+                    "type": type.text,
+                    "numeroChassis": numeroChassis.text,
+                    "dateAchat": dateAchat.value,
+                    "dateMiseenservice": dateMiseenservice.value,
+                    "capacite": capacite.text,
+                    "caracteristiques": caracteristiques.text,
+                    "kilometrage": kilometrage.text,
+                    "climatisation": climatisation.value,
+                    "logo": File(path.value),
+                  };
+                  Get.dialog(
+                    const Center(
+                      child: SizedBox(
+                        height: 40,
+                        width: 40,
+                        child: CircularProgressIndicator(),
+                      ),
                     ),
-                  ),
-                );
-                /*
+                  );
+                  /*
                 {
                   "nom": nom.text,
                   "email": email.text,
@@ -372,7 +436,10 @@ class FormulaireBus extends StatelessWidget {
                   "prime": "",
                 };
                 */
-                busController.enregistrement(u);
+                  busController.enregistrement(u);
+                }
+              } else {
+                Get.snackbar("Erreur", "Veuillez selectionner une image");
               }
             },
             child: Padding(

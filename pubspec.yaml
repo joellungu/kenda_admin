@@ -38,6 +38,7 @@ dependencies:
   get:
   shimmer:
   http:
+  image_picker:
   google_fonts: ^3.0.1
   share_plus: ^4.1.0
   accordion: ^2.5.1

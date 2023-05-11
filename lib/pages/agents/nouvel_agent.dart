@@ -321,14 +321,6 @@ class FormulaireAgent extends StatelessWidget {
                   right: 20,
                   bottom: 2,
                 ),
-                child: Text(
-                  "Enregistrer".tr,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.normal,
-                    fontSize: 15,
-                  ),
-                ),
                 decoration: BoxDecoration(
                   color: Colors.indigo.shade900,
                   borderRadius: BorderRadius.circular(10),
@@ -337,6 +329,14 @@ class FormulaireAgent extends StatelessWidget {
                   //   end: Alignment.centerRight,
                   //   colors: <Color>[Colors.yellow.shade700, Colors.black],
                   // ),
+                ),
+                child: Text(
+                  "Enregistrer".tr,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.normal,
+                    fontSize: 15,
+                  ),
                 ),
               ),
             ),
