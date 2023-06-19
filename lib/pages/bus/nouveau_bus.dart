@@ -401,7 +401,7 @@ class FormulaireBus extends StatelessWidget {
                   //
                   Map e = box.read("user");
                   Map u = {
-                    "idPartenaire": e['id'],
+                    "idPartenaire": e['idPartenaire'],
                     "nom": nom.text,
                     "marque": marque.text,
                     "type": type.text,

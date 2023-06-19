@@ -149,7 +149,7 @@ class Rapport extends StatelessWidget {
                 Map e = box.read("user");
                 Map u = {
                   //"id": 2,
-                  "idPartenaire": e['id'],
+                  "idPartenaire": e['idPartenaire'],
                   "object": object.text,
                   //"titre": titre.text,
                   "contenue": contenue.text,

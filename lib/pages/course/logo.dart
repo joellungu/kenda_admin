@@ -5,18 +5,22 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:kenda_admin/pages/application/application_controller.dart';
 import 'package:kenda_admin/utils/requetes.dart';
 
 class Logo extends StatelessWidget {
+  //
   //
   Requete requete = Requete();
   //
   RxString path = "".obs;
   //
+  ApplicationController applicationController = Get.find();
+  //
   Logo() {
     //
     e.value = box.read("user") ?? {};
-    print("::::: ${e.value}");
+    //print("::::: ${e.value}");
   }
   //
   var box = GetStorage();
@@ -33,7 +37,23 @@ class Logo extends StatelessWidget {
             await picker.pickImage(source: ImageSource.gallery);
         //setState(() {
         if (image != null) {
+          Get.dialog(
+            Container(
+              height: 40,
+              width: 40,
+              alignment: Alignment.center,
+              child: const CircularProgressIndicator(),
+            ),
+          );
           path.value = image.path;
+          e['logo'] = File(path.value).readAsBytesSync();
+          //
+          bool v = await applicationController.setLogo(e);
+          if (v) {
+            //
+            path.value = "";
+            //
+          }
         }
         //});
       },

@@ -2,9 +2,10 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:kenda_admin/utils/requetes.dart';
 
-class ItineranceController extends GetxController {
+class ItineranceController extends GetxController with StateMixin<List> {
   RxString arrive = "".obs;
   RxString depart = "".obs;
+  RxString route = "RN1".obs;
   //
   var box = GetStorage();
   //
@@ -82,6 +83,19 @@ class ItineranceController extends GetxController {
       return rep.body;
     } else {
       return false;
+    }
+  }
+
+  //
+  getAllRouteBy(String route) async {
+    change([], status: RxStatus.loading());
+    Response rep = await requete.getE("arrets/route/$route");
+    print("------: ${rep.body}");
+    if (rep.isOk) {
+      print(rep.body);
+      change(rep.body, status: RxStatus.success());
+    } else {
+      change([], status: RxStatus.empty());
     }
   }
 }

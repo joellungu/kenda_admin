@@ -27,14 +27,14 @@ class _Course extends State<Course> with SingleTickerProviderStateMixin {
     controller = TabController(length: 7, vsync: this);
     super.initState();
     //
-    var box = GetStorage();
+    //var box = GetStorage();
     //
-    Map e = box.read("user");
+    //Map e = box.read("user");
     //
-    courseController.getAllCoures(e['id']);
+    courseController.getAllCoures(1);
     //
     controller!.addListener(() {
-      print("La valeur: ${controller!.index}");
+      //print("La valeur: ${controller!.index}");
       courseController.getAllCoures(controller!.index + 1);
     });
   }

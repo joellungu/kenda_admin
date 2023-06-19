@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:kenda_admin/pages/course/itinerance/route.dart';
+import 'package:kenda_admin/widgets/voir_route.dart';
 
 import 'itinerance_controller.dart';
 import 'itinerance_details.dart';
@@ -88,7 +90,7 @@ class _Itenerance extends State<Itenerance> {
                 pinned: true,
                 snap: false,
                 floating: false,
-                expandedHeight: Get.size.height / 3.2,
+                expandedHeight: Get.size.height / 3.7,
                 flexibleSpace: FlexibleSpaceBar(
                   expandedTitleScale: 2,
                   background: Stack(
@@ -191,8 +193,9 @@ class _Itenerance extends State<Itenerance> {
                             ),
                             ElevatedButton(
                               onPressed: () {
-                                //
-                                showSimpleModal(Lieu(0), context);
+                                //itineranceController.route
+
+                                showSimpleModal(VoirRoute(), context);
                                 //
                               },
                               style: ButtonStyle(
@@ -212,9 +215,7 @@ class _Itenerance extends State<Itenerance> {
                                       flex: 2,
                                       child: Obx(
                                         () => Text(
-                                          renverser.value
-                                              ? "Arrivée"
-                                              : "Départ",
+                                          itineranceController.route.value,
                                           style: TextStyle(
                                             color: Colors.grey.shade500,
                                           ),
@@ -252,125 +253,228 @@ class _Itenerance extends State<Itenerance> {
                               height: 10,
                             ),
                             ElevatedButton(
-                              onPressed: () {
-                                showSimpleModal(Lieu(1), context);
+                              onPressed: () async {
+                                //
+                                String r = "N°1";
+                                //
+                                if ("RN1" == itineranceController.route.value) {
+                                  r = "N°1";
+                                } else if ("RN2" ==
+                                    itineranceController.route.value) {
+                                  r = "N°2";
+                                } else if ("RN5" ==
+                                    itineranceController.route.value) {
+                                  r = "N°5";
+                                } else if ("RN7" ==
+                                    itineranceController.route.value) {
+                                  r = "N°7";
+                                } else if ("RN9" ==
+                                    itineranceController.route.value) {
+                                  r = "N°9";
+                                } else {
+                                  r = "N°12";
+                                }
+                                //
+                                Get.to(RouteNationale(r, this));
+                                //
+                                //Get.to(Resultat({}));
+                                // if (itineranceController
+                                //         .depart.value.isNotEmpty &&
+                                //     itineranceController
+                                //         .arrive.value.isNotEmpty) {
+                                //   //
+                                //   ItineranceController itineranceController =
+                                //       Get.find();
+                                //   //
+                                //   Get.dialog(Center(
+                                //     child: SizedBox(
+                                //       height: 40,
+                                //       width: 40,
+                                //       child: CircularProgressIndicator(),
+                                //     ),
+                                //   ));
+                                //   List l =
+                                //       await itineranceController.getItinerance(
+                                //     itineranceController.depart.value,
+                                //     itineranceController.arrive.value,
+                                //   );
+                                //   //
+                                //   Get.back();
+                                //   //
+                                //   if (l.isNotEmpty) {
+                                //     Get.to(
+                                //       NouvelleItinerance(
+                                //         l,
+                                //         {
+                                //           "depart":
+                                //               itineranceController.depart.value,
+                                //           "arrive":
+                                //               itineranceController.arrive.value,
+                                //         },
+                                //         this,
+                                //       ),
+                                //     );
+                                //   } else {
+                                //     Get.snackbar("Vide",
+                                //         "Pas d'itinerance pour le moment.");
+                                //   }
+
+                                //   //
+                                // } else {
+                                //   //
+                                //   Get.snackbar(
+                                //     "Attention",
+                                //     "Veuillez selectionner le lieu de départ et d'arrivé.",
+                                //     colorText: Colors.white,
+                                //     snackStyle: SnackStyle.GROUNDED,
+                                //   );
+                                //   //
+                                // }
                               },
                               style: ButtonStyle(
                                 backgroundColor: MaterialStateProperty.all(
-                                  Colors.indigo.shade800,
+                                  Colors.green.shade700,
                                 ),
                                 elevation: MaterialStateProperty.all(0),
                               ),
-                              child: SizedBox(
-                                width: Get.size.width / 1.2,
+                              child: Container(
+                                alignment: Alignment.center,
                                 height: 50,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Expanded(
-                                      flex: 2,
-                                      child: Obx(
-                                        () => Text(
-                                          renverser.value
-                                              ? "Départ"
-                                              : "Arrivée",
-                                          style: TextStyle(
-                                            color: Colors.grey.shade500,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 9,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Obx(
-                                            () => Text(
-                                              renverser.value
-                                                  ? itineranceController
-                                                      .depart.value
-                                                  : itineranceController
-                                                      .arrive.value,
-                                              textAlign: TextAlign.left,
-                                              style: TextStyle(
-                                                color: Colors.grey.shade400,
-                                                fontSize: 20,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
+                                child: Text(
+                                  "Afficher",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                  ),
                                 ),
+                                width: Get.size.width / 1.2,
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 10),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "Recherches",
-                                    style: TextStyle(
-                                      fontSize: 13.0,
-                                      color: Colors.grey.shade400,
-                                    ),
-                                  ),
-                                  IconButton(
-                                    onPressed: () {
-                                      //
-                                    },
-                                    icon: Icon(
-                                      Icons.help,
-                                      color: Colors.indigo.shade900,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+
+                            // const SizedBox(
+                            //   height: 10,
+                            // ),
+                            // ElevatedButton(
+                            //   onPressed: () {
+                            //     showSimpleModal(Lieu(1), context);
+                            //   },
+                            //   style: ButtonStyle(
+                            //     backgroundColor: MaterialStateProperty.all(
+                            //       Colors.indigo.shade800,
+                            //     ),
+                            //     elevation: MaterialStateProperty.all(0),
+                            //   ),
+                            //   child: SizedBox(
+                            //     width: Get.size.width / 1.2,
+                            //     height: 50,
+                            //     child: Row(
+                            //       mainAxisAlignment:
+                            //           MainAxisAlignment.spaceBetween,
+                            //       children: [
+                            //         Expanded(
+                            //           flex: 2,
+                            //           child: Obx(
+                            //             () => Text(
+                            //               renverser.value
+                            //                   ? "Départ"
+                            //                   : "Arrivée",
+                            //               style: TextStyle(
+                            //                 color: Colors.grey.shade500,
+                            //               ),
+                            //             ),
+                            //           ),
+                            //         ),
+                            //         Expanded(
+                            //           flex: 9,
+                            //           child: Row(
+                            //             mainAxisAlignment:
+                            //                 MainAxisAlignment.start,
+                            //             children: [
+                            //               Obx(
+                            //                 () => Text(
+                            //                   renverser.value
+                            //                       ? itineranceController
+                            //                           .depart.value
+                            //                       : itineranceController
+                            //                           .arrive.value,
+                            //                   textAlign: TextAlign.left,
+                            //                   style: TextStyle(
+                            //                     color: Colors.grey.shade400,
+                            //                     fontSize: 20,
+                            //                   ),
+                            //                 ),
+                            //               ),
+                            //             ],
+                            //           ),
+                            //         ),
+                            //       ],
+                            //     ),
+                            //   ),
+                            // ),
+
+                            // Padding(
+                            //   padding: const EdgeInsets.only(left: 10),
+                            //   child: Row(
+                            //     mainAxisAlignment:
+                            //         MainAxisAlignment.spaceBetween,
+                            //     children: [
+                            //       Text(
+                            //         "Recherches",
+                            //         style: TextStyle(
+                            //           fontSize: 13.0,
+                            //           color: Colors.grey.shade400,
+                            //         ),
+                            //       ),
+                            //       IconButton(
+                            //         onPressed: () {
+                            //           //
+                            //         },
+                            //         icon: Icon(
+                            //           Icons.help,
+                            //           color: Colors.indigo.shade900,
+                            //         ),
+                            //       ),
+                            //     ],
+                            //   ),
+                            // ),
                           ],
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 10),
-                        child: Align(
-                          alignment: Alignment.centerRight,
-                          child: InkWell(
-                            onTap: () {
-                              renverser.value = renverser.value ? false : true;
-                            },
-                            child: Container(
-                              height: 32,
-                              width: 32,
-                              // foregroundDecoration: BoxDecoration(
-                              //   color: Colors.yellow,
-                              //   borderRadius: BorderRadius.circular(16),
-                              // ),
-                              decoration: BoxDecoration(
-                                color: Colors.indigo.shade900,
-                                border: Border.all(
-                                  color: Colors.indigo.shade700,
-                                  width: 2,
-                                ),
-                                borderRadius: BorderRadius.circular(16),
-                              ),
-                              child: RotatedBox(
-                                quarterTurns: 45,
-                                child: Icon(
-                                  Icons.sync,
-                                  color: Colors.grey.shade500,
-                                ),
-                              ),
-                              //color: Colors.grey.shade600,
-                            ),
-                          ),
-                        ),
-                      )
+                      // Padding(
+                      //   padding: const EdgeInsets.only(right: 10),
+                      //   child: Align(
+                      //     alignment: Alignment.centerRight,
+                      //     child: InkWell(
+                      //       onTap: () {
+                      //         renverser.value = renverser.value ? false : true;
+                      //       },
+                      //       child: Container(
+                      //         height: 32,
+                      //         width: 32,
+                      //         // foregroundDecoration: BoxDecoration(
+                      //         //   color: Colors.yellow,
+                      //         //   borderRadius: BorderRadius.circular(16),
+                      //         // ),
+                      //         decoration: BoxDecoration(
+                      //           color: Colors.indigo.shade900,
+                      //           border: Border.all(
+                      //             color: Colors.indigo.shade700,
+                      //             width: 2,
+                      //           ),
+                      //           borderRadius: BorderRadius.circular(16),
+                      //         ),
+                      //         child: RotatedBox(
+                      //           quarterTurns: 45,
+                      //           child: Icon(
+                      //             Icons.sync,
+                      //             color: Colors.grey.shade500,
+                      //           ),
+                      //         ),
+                      //         //color: Colors.grey.shade600,
+                      //       ),
+                      //     ),
+                      //   ),
+                      // )
                     ],
                   ),
                   centerTitle: false,
@@ -382,79 +486,6 @@ class _Itenerance extends State<Itenerance> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      ElevatedButton(
-                        onPressed: () async {
-                          //Get.to(Resultat({}));
-                          if (itineranceController.depart.value.isNotEmpty &&
-                              itineranceController.arrive.value.isNotEmpty) {
-                            //
-                            ItineranceController itineranceController =
-                                Get.find();
-                            //
-                            Get.dialog(Center(
-                              child: SizedBox(
-                                height: 40,
-                                width: 40,
-                                child: CircularProgressIndicator(),
-                              ),
-                            ));
-                            List l = await itineranceController.getItinerance(
-                              itineranceController.depart.value,
-                              itineranceController.arrive.value,
-                            );
-                            //
-                            Get.back();
-                            //
-                            if (l.isNotEmpty) {
-                              Get.to(
-                                NouvelleItinerance(
-                                  l,
-                                  {
-                                    "depart": itineranceController.depart.value,
-                                    "arrive": itineranceController.arrive.value,
-                                  },
-                                  this,
-                                ),
-                              );
-                            } else {
-                              Get.snackbar(
-                                  "Vide", "Pas d'itinerance pour le moment.");
-                            }
-
-                            //
-                          } else {
-                            //
-                            Get.snackbar(
-                              "Attention",
-                              "Veuillez selectionner le lieu de départ et d'arrivé.",
-                              colorText: Colors.white,
-                              snackStyle: SnackStyle.GROUNDED,
-                            );
-                            //
-                          }
-                        },
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(
-                            Colors.green.shade700,
-                          ),
-                          elevation: MaterialStateProperty.all(0),
-                        ),
-                        child: Container(
-                          alignment: Alignment.center,
-                          height: 50,
-                          child: Text(
-                            "Ajouter",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                            ),
-                          ),
-                          width: Get.size.width / 1.2,
-                        ),
-                      ),
                       const SizedBox(
                         height: 10,
                       ),

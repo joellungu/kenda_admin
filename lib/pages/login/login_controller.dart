@@ -49,6 +49,7 @@ class LoginController extends GetxController {
 
   loagingAdmin(String numero, String mdp) async {
     //
+    print("partenaires/login/$numero/$mdp");
     Response rep = await requete.getE("partenaires/login/$numero/$mdp");
     if (rep.isOk) {
       print(rep.statusCode);

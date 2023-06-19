@@ -152,7 +152,7 @@ class _NouvelleCours extends State<NouvelleCours> {
             Map e = box.read("user");
             //
             Map u = {
-              "idPartenaire": e['id'],
+              "idPartenaire": e['idPartenaire'],
               "idArretDepart": idArretDepart,
               "idArretArrive": idArretArrive,
               "chauffeur": chauffeur,
