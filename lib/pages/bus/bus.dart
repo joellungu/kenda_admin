@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:kenda_admin/pages/bus/bus_controller.dart';
 import 'package:kenda_admin/utils/requetes.dart';
 import 'package:kenda_admin/widgets/loader.dart';
@@ -51,6 +54,36 @@ class Bus extends GetView<BusController> {
                     onTap: () {
                       //
                       showSimpleModal(DetailsBus(e), context);
+                      //
+                    },
+                    onLongPress: () async {
+                      //
+                      RxString path = "".obs;
+                      //
+                      final ImagePicker picker = ImagePicker();
+                      //
+                      final XFile? image =
+                          await picker.pickImage(source: ImageSource.gallery);
+                      //setState(() {
+                      if (image != null) {
+                        path.value = image.path;
+                        //
+                        e["logo"] = File(path.value).readAsBytesSync();
+                        //
+                        BusController busController = Get.find();
+                        //
+                        Get.dialog(
+                          const Center(
+                            child: SizedBox(
+                              height: 40,
+                              width: 40,
+                              child: CircularProgressIndicator(),
+                            ),
+                          ),
+                        );
+                        //
+                        busController.mettreAjour(e);
+                      }
                       //
                     },
                     leading: e['logo'] != null
@@ -122,7 +155,7 @@ class Bus extends GetView<BusController> {
             appBar: AppBar(
               centerTitle: false,
               title: const Text(
-                "Vos agents",
+                "Vos bus",
                 style: TextStyle(
                   color: Colors.white,
                 ),

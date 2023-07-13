@@ -19,6 +19,7 @@ class FormulaireBus extends StatelessWidget {
   var capacite = TextEditingController(text: "50");
   var caracteristiques = TextEditingController();
   var kilometrage = TextEditingController();
+  var numeroPlaque = TextEditingController();
   RxBool climatisation = true.obs;
   //
   RxString path = "".obs;
@@ -356,6 +357,30 @@ class FormulaireBus extends StatelessWidget {
                     height: 10,
                   ),
                   TextFormField(
+                    controller: numeroPlaque,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      //prefixIcon: const Icon(Icons.email),
+                      hintText: 'Numero de Plaque'.tr,
+                      labelText: 'Numero de Plaque'.tr,
+                    ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Numero de Plaque'.tr;
+                      }
+
+                      return null;
+                    },
+                    onChanged: (value) {
+                      //print("Password value $value");
+                    },
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  TextFormField(
                     controller: kilometrage,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
@@ -412,7 +437,8 @@ class FormulaireBus extends StatelessWidget {
                     "caracteristiques": caracteristiques.text,
                     "kilometrage": kilometrage.text,
                     "climatisation": climatisation.value,
-                    "logo": File(path.value),
+                    "numeroPlaque": numeroPlaque.text,
+                    "logo": File(path.value).readAsBytesSync(),
                   };
                   Get.dialog(
                     const Center(

@@ -12,11 +12,13 @@ import 'details_agent.dart';
 
 class Agent extends GetView<AgentController> {
   var box = GetStorage();
-  Agent() {
+  bool admin;
+  Agent(this.admin) {
     var box = GetStorage();
     //
     Map e = box.read("user");
     controller.load(e['id']);
+    print("-------------------:: $admin");
     //controller.load(1);
   }
   @override
@@ -40,21 +42,27 @@ class Agent extends GetView<AgentController> {
                   ),
                 ),
                 actions: [
-                  IconButton(
-                    onPressed: () {
-                      Map user = box.read("user");
-                      print(user);
-                      if (user["role"] == 5) {
-                        showSimpleModal(DetailsAgent(user, false), context);
-                      } else {
-                        showSimpleModal(DetailsAdmin(user), context);
-                      }
-                    },
-                    icon: Icon(
-                      CupertinoIcons.person,
-                      color: Colors.white,
-                    ),
-                  ),
+                  admin
+                      ? IconButton(
+                          onPressed: () {
+                            Map user = box.read("user");
+                            print(user);
+                            if (user["role"] == 5) {
+                              showSimpleModal(
+                                  DetailsAgent(user, false), context);
+                            } else {
+                              showSimpleModal(DetailsAdmin(user), context);
+                            }
+                          },
+                          icon: const Icon(
+                            CupertinoIcons.person,
+                            color: Colors.white,
+                          ),
+                        )
+                      : const SizedBox(
+                          height: 0,
+                          width: 0,
+                        ),
                 ],
                 backgroundColor: Colors.indigo.shade900,
               ),

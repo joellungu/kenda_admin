@@ -28,6 +28,10 @@ class LoginController extends GetxController {
         Get.snackbar("Erreur", "Vous n'etes pas autorisé!");
       } else {
         if (rep.body['actif']) {
+          box.write(
+            "type",
+            "user",
+          );
           Get.off(Accueil());
         } else {
           Get.snackbar("Erreur",
@@ -57,6 +61,10 @@ class LoginController extends GetxController {
       box.write(
         "user",
         rep.body,
+      );
+      box.write(
+        "type",
+        "admin",
       );
       //
       Get.back();

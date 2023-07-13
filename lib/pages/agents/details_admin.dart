@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kenda_admin/pages/agents/agent_controller.dart';
@@ -87,18 +89,19 @@ class DetailsAdmin extends StatelessWidget {
             },
           ),
         ),
-        ListTile(
-          title: Text("logo"),
-          subtitle: Text(e["logo"]),
-          trailing: IconButton(
-            icon: Icon(Icons.edit),
-            onPressed: () {
-              var adresse = TextEditingController();
-              //
-              modifierInfo(e, context, adresse, "logo");
-            },
-          ),
-        ),
+        // ListTile(
+        //   leading: Image.memory(Uint8List.fromList(e["logo"].codeUnits)),
+        //   title: Text("logo"),
+        //   //subtitle: Text(),
+        //   // trailing: IconButton(
+        //   //   icon: Icon(Icons.edit),
+        //   //   onPressed: () {
+        //   //     var adresse = TextEditingController();
+        //   //     //
+        //   //     modifierInfo(e, context, adresse, "logo");
+        //   //   },
+        //   // ),
+        // ),
       ],
     );
   }

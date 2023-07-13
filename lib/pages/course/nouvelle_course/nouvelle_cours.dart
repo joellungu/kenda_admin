@@ -7,6 +7,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:kenda_admin/pages/agents/agent_controller.dart';
 import 'package:kenda_admin/pages/bus/bus_controller.dart';
 import 'package:kenda_admin/pages/course/itinerance/itinerance_controller.dart';
+import 'package:kenda_admin/utils/requetes.dart';
 import 'package:kenda_admin/widgets/loader.dart';
 import 'nouvelle_course_controller.dart';
 
@@ -285,6 +286,7 @@ class _It extends State<It> {
         () => Column(
           children:
               List.generate(itineranceController.listeResumer.length, (index) {
+            //Map e = liste[index];
             return ListTile(
               onTap: () {
                 //
@@ -295,7 +297,7 @@ class _It extends State<It> {
                 //
                 //
               },
-              leading: Icon(Icons.directions_walk),
+
               //const Icon(CupertinoIcons.doc_append),
               title: Text(
                 "${itineranceController.listeResumer.elementAt(index)}",
@@ -315,7 +317,12 @@ class _It extends State<It> {
 
 class Equipage extends GetView<AgentController> {
   Equipage() {
-    controller.load(1);
+    //
+    var box = GetStorage();
+    //
+    Map e = box.read("user");
+    controller.load(e['idPartenaire']);
+    //controller.load(1);
   }
 
   //
@@ -491,7 +498,11 @@ class Equipage extends GetView<AgentController> {
 
 class Buss extends GetView<BusController> {
   Buss() {
-    controller.load(1);
+    //
+    var box = GetStorage();
+    //
+    Map e = box.read("user");
+    controller.load(e['idPartenaire']);
   }
   //
   RxInt i = (-1).obs;
@@ -507,10 +518,21 @@ class Buss extends GetView<BusController> {
             children: [
               bus["id"] != null
                   ? ListTile(
-                      leading: const Icon(
-                        CupertinoIcons.bus,
-                        size: 40,
-                      ),
+                      leading: bus['logo'] != null
+                          ? Container(
+                              height: 50,
+                              width: 50,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: NetworkImage(
+                                      "${Requete.url}/bus/bus.png?id=${bus['id']}"),
+                                ),
+                              ),
+                            )
+                          : const Icon(
+                              CupertinoIcons.bus,
+                              size: 40,
+                            ),
                       title: Text(
                         "${bus['marque']}",
                         style: TextStyle(
@@ -549,10 +571,21 @@ class Buss extends GetView<BusController> {
                       //print(e);
                       //
                     },
-                    leading: const Icon(
-                      CupertinoIcons.bus,
-                      size: 40,
-                    ),
+                    leading: e['logo'] != null
+                        ? Container(
+                            height: 50,
+                            width: 50,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: NetworkImage(
+                                    "${Requete.url}/bus/bus.png?id=${e['id']}"),
+                              ),
+                            ),
+                          )
+                        : const Icon(
+                            CupertinoIcons.bus,
+                            size: 40,
+                          ),
                     title: Text(
                       "${e['marque']}",
                       style: TextStyle(

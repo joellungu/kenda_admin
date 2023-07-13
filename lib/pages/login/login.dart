@@ -171,9 +171,11 @@ class Login extends StatelessWidget {
                         );
 
                         if (choix.value == "admin") {
+                          print("-------------------:: admin");
                           loginController.loagingAdmin(
                               "+243${numero.text}", mdp.text);
                         } else {
+                          print("-------------------:: agent");
                           loginController.loagingAgent(
                               "243${numero.text}", mdp.text);
                         }

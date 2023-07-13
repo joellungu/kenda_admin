@@ -1,10 +1,14 @@
 import 'dart:async';
 
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:kenda_admin/utils/requetes.dart';
 
 class BusController extends GetxController with StateMixin<List> {
   Requete requete = Requete();
+  //
+  var box = GetStorage();
+  //
   load(int id) async {
     Response rep = await requete.getE(
       "bus/all/$id",
@@ -56,6 +60,29 @@ class BusController extends GetxController with StateMixin<List> {
       Get.snackbar(
         "Erreur",
         "Suppression non éffectué code: ${rep.statusCode}",
+      );
+    }
+  }
+
+  mettreAjour(Map x) async {
+    Response rep = await requete.putE("bus/${x['id']}", x);
+    if (rep.isOk) {
+      Get.back();
+      //
+      Get.snackbar(
+        "Succès",
+        "Photo modifié",
+      );
+      //
+      Map e = box.read("user");
+      load(e['id']);
+      //
+    } else {
+      //
+      Get.back();
+      Get.snackbar(
+        "Erreur",
+        "Modification non éffectué code: ${rep.statusCode}",
       );
     }
   }

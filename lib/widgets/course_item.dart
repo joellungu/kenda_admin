@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kenda_admin/pages/course/course_controller.dart';
 import 'package:kenda_admin/pages/course/detail.dart';
+import 'package:kenda_admin/utils/requetes.dart';
 //import 'nouvelle_course/nouvelle_cours.dart';
 
 class CourseItem extends StatefulWidget {
   Map data;
   CourseItem(this.data) {
-    print(DateTime.now());
+    //print(DateTime.now());
   }
   @override
   State<StatefulWidget> createState() {
@@ -44,10 +45,26 @@ class _CourseItem extends State<CourseItem> {
         Get.to(Detail(widget.data));
         //
       },
-      leading: const Icon(
-        CupertinoIcons.bus,
-        size: 40,
-      ),
+      leading: widget.data['bus']['logo'] != null
+          ? Container(
+              height: 50,
+              width: 50,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: NetworkImage(
+                      "${Requete.url}/bus/bus.png?id=${widget.data['bus']['id']}"),
+                ),
+              ),
+            )
+          : const Icon(
+              CupertinoIcons.bus,
+              size: 40,
+            ),
+
+      // leading: const Icon(
+      //   CupertinoIcons.bus,
+      //   size: 40,
+      // ),
       // leading: PieChart(
       //   data: PieChartData(Colors.indigo.shade900, equation()),
       //   radius: 17,

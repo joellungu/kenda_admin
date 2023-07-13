@@ -21,12 +21,12 @@ class _AccueilAdmin extends State<AccueilAdmin> {
     return Scaffold(
       //appBar: AppBar(),
       body: page == 0
-          ? Course()
+          ? Course(true)
           : page == 1
               ? Itenerance()
               : page == 2
                   ? Bus()
-                  : Agent(),
+                  : Agent(true),
       bottomNavigationBar: BottomNavigationBar(
         onTap: (e) {
           //

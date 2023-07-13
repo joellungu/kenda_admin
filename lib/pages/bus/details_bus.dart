@@ -151,6 +151,19 @@ class DetailsBus extends StatelessWidget {
             },
           ),
         ),
+        ListTile(
+          //climatisation
+          title: Text("numeroPlaque"),
+          subtitle: Text(e["numeroPlaque"] ?? ''),
+          trailing: IconButton(
+            icon: Icon(Icons.edit),
+            onPressed: () {
+              var climatisation = TextEditingController();
+              //
+              modifierInfo(e, context, climatisation, "numeroPlaque");
+            },
+          ),
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [

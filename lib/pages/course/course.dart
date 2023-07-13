@@ -11,6 +11,9 @@ import 'logo.dart';
 import 'nouvelle_course/nouvelle_cours.dart';
 
 class Course extends StatefulWidget {
+  bool admin;
+  Course(this.admin);
+
   @override
   State<StatefulWidget> createState() {
     return _Course();
@@ -155,18 +158,23 @@ class _Course extends State<Course> with SingleTickerProviderStateMixin {
               const SizedBox(
                 height: 10,
               ),
-              FloatingActionButton(
-                tooltip: "",
-                heroTag: "history",
-                onPressed: () {
-                  Get.to(Historique());
-                },
-                backgroundColor: Colors.indigo.shade900,
-                child: const Icon(
-                  Icons.history,
-                  color: Colors.white,
-                ),
-              ),
+              widget.admin
+                  ? FloatingActionButton(
+                      tooltip: "",
+                      heroTag: "history",
+                      onPressed: () {
+                        Get.to(Historique());
+                      },
+                      backgroundColor: Colors.indigo.shade900,
+                      child: const Icon(
+                        Icons.history,
+                        color: Colors.white,
+                      ),
+                    )
+                  : const SizedBox(
+                      height: 0,
+                      width: 0,
+                    ),
               const SizedBox(
                 height: 10,
               ),

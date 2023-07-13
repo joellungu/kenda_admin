@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:kenda_admin/utils/requetes.dart';
 
 class InfoSupplementaire extends StatelessWidget {
   Map? details;
@@ -189,7 +190,27 @@ class InfoSupplementaire extends StatelessWidget {
                         subtitle:
                             Text("${details!['bus']['caracteristiques']}"),
                       ),
+                      ListTile(
+                        leading: Icon(CupertinoIcons.wrench_fill),
+                        title: Text("Numéro de plaque"),
+                        subtitle: Text("${details!['bus']['numeroPlaque']}"),
+                      ),
                       Divider(),
+                      details!['bus']['logo'] != null
+                          ? Container(
+                              height: Get.size.height / 3.5,
+                              width: Get.size.width / 1.1,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: NetworkImage(
+                                      "${Requete.url}/bus/bus.png?id=${details!['bus']['id']}"),
+                                ),
+                              ),
+                            )
+                          : const Icon(
+                              CupertinoIcons.bus,
+                              size: 40,
+                            ),
                     ],
                   ),
                 )
