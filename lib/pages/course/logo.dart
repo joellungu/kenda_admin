@@ -1,6 +1,8 @@
 import 'dart:io';
+import 'dart:typed_data';
 import 'dart:ui';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -20,7 +22,7 @@ class Logo extends StatelessWidget {
   Logo() {
     //
     e.value = box.read("user") ?? {};
-    //print("::::: ${e.value}");
+    print("::::: ${e.value}");
   }
   //
   var box = GetStorage();
@@ -33,8 +35,12 @@ class Logo extends StatelessWidget {
         //
         final ImagePicker picker = ImagePicker();
         //
-        final XFile? image =
-            await picker.pickImage(source: ImageSource.gallery);
+        final XFile? image = await picker.pickImage(
+          source: ImageSource.gallery,
+          maxHeight: 500,
+          maxWidth: 500,
+          imageQuality: 85,
+        );
         //setState(() {
         if (image != null) {
           Get.dialog(
@@ -45,10 +51,12 @@ class Logo extends StatelessWidget {
               child: const CircularProgressIndicator(),
             ),
           );
+          //e['logo'] = "";
           path.value = image.path;
-          e['logo'] = File(path.value).readAsBytesSync();
+          Uint8List p = await image.readAsBytes();
+          var ph = File(path.value).readAsBytesSync();
           //
-          bool v = await applicationController.setLogo(e);
+          bool v = await applicationController.setLogo(e["idPartenaire"], p);
           if (v) {
             //
             path.value = "";
@@ -59,52 +67,89 @@ class Logo extends StatelessWidget {
       },
       child: Obx(
         () {
-          if (path.value.isEmpty) {
-            if (e['logo'] != null) {
-              return Container(
-                height: 50,
-                width: 50,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: NetworkImage(
-                        "${Requete.url}/partenaires/profil.png?id=${e['idPartenaire']}"),
-                  ),
-                  borderRadius: BorderRadius.circular(25),
-                ),
-              );
-            } else {
-              return Container(
-                height: 50,
-                width: 50,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  //color: Colors.red,
-                  borderRadius: BorderRadius.circular(25),
-                ),
-                child: const Icon(
-                  Icons.photo_camera,
-                  color: Colors.white,
-                ),
-              );
-            }
-          } else {
-            return Container(
-              height: 50,
-              width: 50,
-              alignment: Alignment.center,
-              //child: const Icon(Icons.photo_camera),
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: FileImage(
-                      File(path.value),
-                    ),
-                    fit: BoxFit.fill),
-                borderRadius: BorderRadius.circular(25),
-              ),
-            );
-          }
+          return SizedBox(
+            height: 50,
+            width: 50,
+            child: Image.network(
+              "${Requete.url}/companie/profil.png?id=${e['idPartenaire']}",
+              loadingBuilder: (context, child, loadingProgress) =>
+                  (loadingProgress == null)
+                      ? child
+                      : CircularProgressIndicator(),
+              errorBuilder: (context, error, stackTrace) => Icon(Icons.error),
+            ),
+          );
+          // child: FutureBuilder(
+          //   future: getPhoto(
+          //     "companie/profil.png?id=${e['idPartenaire']}",
+          //   ),
+          //   builder: (c, t) {
+          //     if (t.hasData) {
+          //       var v = t.data as bool;
+          //       //
+          //       //
+          //       if (v) {
+          //         return Image.network(
+          //           "${Requete.url}/companie/profil.png?id=${e['idPartenaire']}",
+          //           loadingBuilder: (context, child, loadingProgress) =>
+          //               (loadingProgress == null)
+          //                   ? child
+          //                   : CircularProgressIndicator(),
+          //           errorBuilder: (context, error, stackTrace) =>
+          //               Icon(Icons.error),
+          //         );
+          //       } else {
+          //         return Container(
+          //           alignment: Alignment.center,
+          //           child: const Icon(Icons.photo_camera),
+          //         );
+          //       }
+          //     } else {
+          //       return Container(
+          //         alignment: Alignment.center,
+          //         child: const Icon(
+          //           Icons.photo_camera,
+          //           color: Colors.red,
+          //         ),
+          //       );
+          //     }
+          //   },
+          // )
+          // // CachedNetworkImage(
+          // //   imageUrl: "",
+          // //   placeholder: (context, url) => CircularProgressIndicator(),
+          // //   errorWidget: (context, url, error) => Icon(
+          // //     Icons.photo_camera_front,
+          // //   ),
+          // // ),
+          // // decoration: BoxDecoration(
+          // //   image: DecorationImage(
+          // //     image: NetworkImage(
+          // //         ""),
+          // //   ),
+          // //   borderRadius: BorderRadius.circular(25),
+          // // ),
+          // );
         },
       ),
     );
+  }
+
+  Future<bool> getPhoto(String url) async {
+    //
+    Requete requete = Requete();
+    //
+    print('satutcode: $url');
+    //
+    Response response = await requete.getE(url);
+    if (response.isOk) {
+      //
+      print("satutcode: ${response.statusCode}");
+      return true;
+    } else {
+      //
+      print("satutcode: ${response.statusCode}");
+      return false;
+    }
   }
 }

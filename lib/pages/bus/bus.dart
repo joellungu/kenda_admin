@@ -21,7 +21,7 @@ class Bus extends GetView<BusController> {
     var box = GetStorage();
     //
     Map e = box.read("user");
-    controller.load(e['id']);
+    controller.load(e['idPartenaire']);
   }
   @override
   Widget build(BuildContext context) {

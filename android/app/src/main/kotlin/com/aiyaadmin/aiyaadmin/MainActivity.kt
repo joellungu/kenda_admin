@@ -1,4 +1,4 @@
-package com.example.kenda_admin
+package com.aiyaadmin.aiyaadmin
 
 import io.flutter.embedding.android.FlutterActivity
 

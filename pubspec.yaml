@@ -39,7 +39,7 @@ dependencies:
   shimmer:
   http:
   image_picker:
-  google_fonts: ^3.0.1
+  google_fonts: 4.0.1
   share_plus: ^4.1.0
   accordion: ^2.5.1
   jwt_decoder: ^2.0.1
@@ -56,6 +56,9 @@ dependencies:
   timelines: ^0.1.0
   flutter_osm_plugin: ^0.42.0
   pie_chart: ^5.3.2
+  cached_network_image: ^3.3.0
+
+  change_app_package_name: ^1.1.0
 
 dev_dependencies:
   flutter_test:

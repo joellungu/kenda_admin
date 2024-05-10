@@ -120,7 +120,7 @@ class DetailsAdmin extends StatelessWidget {
         return AlertDialog(
           title: Text("${nom.capitalize}"),
           contentPadding: const EdgeInsets.all(5),
-          content: Container(
+          content: SizedBox(
             height: 200,
             width: 250,
             child: Form(

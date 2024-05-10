@@ -4,9 +4,10 @@ import 'package:kenda_admin/utils/requetes.dart';
 
 class CourseController extends GetxController with StateMixin<List> {
   //
+  Requete requete = Requete();
+  //
   getAllCoures(int jour) async {
     //change([], status: RxStatus.loading());
-    Requete requete = Requete();
     //
     var box = GetStorage();
     Map e = box.read("user") ?? {};
@@ -24,5 +25,24 @@ class CourseController extends GetxController with StateMixin<List> {
       change([], status: RxStatus.empty());
     }
     //
+  }
+
+  setStatus(String id, int valeur, int jour) async {
+    //
+    Response rep =
+        await requete.putE("courses/suspendre/$id?status=$valeur", valeur);
+    print(rep.statusCode);
+    print(rep.body);
+
+    if (rep.isOk) {
+      Get.back();
+      Get.back();
+      getAllCoures(jour);
+      Get.snackbar("Succès", "La mise à jour a été éffectué avec succès");
+    } else {
+      //
+      Get.back();
+      Get.snackbar("Oups", "Un problème est survenu lors de la mise à jour.");
+    }
   }
 }

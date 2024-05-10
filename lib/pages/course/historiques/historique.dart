@@ -15,7 +15,7 @@ import 'jour.dart';
 
 class Historique extends GetView<HistoriqueController> {
   RxInt mois = 1.obs;
-  RxInt annee = 2023.obs;
+  RxInt annee = 2024.obs;
 
   //
   //HistoriqueController controller = Get.find();
@@ -58,7 +58,7 @@ class Historique extends GetView<HistoriqueController> {
             shrinkWrap: true,
             children: [
               Container(
-                height: 100,
+                height: 105,
                 color: Colors.indigo.shade100,
                 child: Row(
                   children: [

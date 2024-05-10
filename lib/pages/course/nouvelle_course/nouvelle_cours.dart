@@ -174,6 +174,7 @@ class _NouvelleCours extends State<NouvelleCours> {
               "provinceArrive": provinceArrive,
               "lieuActuel": depart,
               "terminer": false,
+              "status": 0,
             };
             embarqueur['nom'] == null ? u : u["embarqueur"] = embarqueur;
             print('la avleur u: ${u['troncons']}');

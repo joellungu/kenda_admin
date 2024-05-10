@@ -8,7 +8,7 @@ class AgentController extends GetxController with StateMixin<List> {
   Requete requete = Requete();
   load(int id) async {
     Response rep = await requete.getE(
-      "agents/all/$id",
+      "agent/all/$id",
     );
     if (rep.isOk) {
       //
@@ -21,7 +21,7 @@ class AgentController extends GetxController with StateMixin<List> {
   }
 
   enregistrement(Map e) async {
-    Response rep = await requete.postE("agents", e);
+    Response rep = await requete.postE("agent", e);
     if (rep.isOk) {
       Get.back();
       //
@@ -41,7 +41,7 @@ class AgentController extends GetxController with StateMixin<List> {
 
   supprimer(String id) async {
     Response rep = await requete.deleteE(
-      "agents/$id",
+      "agent/$id",
     );
     if (rep.isOk) {
       Get.back();
@@ -78,7 +78,7 @@ class AgentController extends GetxController with StateMixin<List> {
   }
 
   putDataAdmin(Map e) async {
-    Response rep = await requete.putE("partenaires/${e['id']}", e);
+    Response rep = await requete.putE("companie/${e['id']}", e);
     if (rep.isOk) {
       //
       Get.snackbar("Succès", "Mise à jour reussi.");

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kenda_admin/pages/course/carte.dart';
+import 'package:kenda_admin/pages/course/course_controller.dart';
 import 'package:kenda_admin/pages/course/details_arrets.dart';
 import 'package:kenda_admin/pages/course/infos.dart';
 import 'package:kenda_admin/pages/course/infos_supplementaire.dart';
@@ -23,6 +24,9 @@ class Detail extends StatefulWidget {
 }
 
 class _Detail extends State<Detail> {
+  //
+  CourseController courseController = Get.find();
+  //
   int arrs = 0;
   @override
   void initState() {
@@ -131,6 +135,7 @@ class _Detail extends State<Detail> {
                         alignment: Alignment.centerLeft,
                         child: Text(
                           "Départ : ${[
+                            "",
                             "Lundi",
                             "Mardi",
                             "Mercredi",
@@ -201,7 +206,23 @@ class _Detail extends State<Detail> {
                             ),
                             alignment: Alignment.centerRight,
                             child: ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () async {
+                                //courses/suspendre/widget.e['id']/
+                                //widget.e['jourDepart']
+                                Get.dialog(
+                                  const Center(
+                                    child: SizedBox(
+                                      height: 40,
+                                      width: 40,
+                                      child: CircularProgressIndicator(),
+                                    ),
+                                  ),
+                                );
+                                //
+                                int vSus = widget.e['status'] == 0 ? 1 : 0;
+                                courseController.setStatus("${widget.e['id']}",
+                                    vSus, widget.e['jourDepart']);
+                              },
                               style: ButtonStyle(
                                 backgroundColor: MaterialStateProperty.all(
                                     Colors.red.shade900),
@@ -210,7 +231,7 @@ class _Detail extends State<Detail> {
                                 widget.e['status'] == 0
                                     ? "Suspendre"
                                     : "Reprendre",
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Colors.white,
                                 ),
                               ),
@@ -474,7 +495,6 @@ class _Detail extends State<Detail> {
   }
 
   //
-
 }
 
 class TicketQrCode extends StatelessWidget {

@@ -37,7 +37,7 @@ class _Accueil extends State<Accueil> {
         currentIndex: page,
         selectedItemColor: Colors.indigo.shade900,
         unselectedItemColor: Colors.grey.shade400,
-        items: [
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(CupertinoIcons.calendar_badge_plus),
             label: "Courses",

@@ -63,8 +63,8 @@ class KendaAdmin extends StatelessWidget {
         ),
         textButtonTheme: TextButtonThemeData(
           style: TextButton.styleFrom(
-            primary: Colors.blue,
-          ),
+              // primary: Colors.blue,
+              ),
         ),
         cardTheme: CardTheme(
           color: Colors.white,
@@ -75,15 +75,15 @@ class KendaAdmin extends StatelessWidget {
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            onPrimary: Colors.blue,
-            primary: Colors.white,
-          ),
+              // onPrimary: Colors.blue,
+              // primary: Colors.white,
+              ),
         ),
         outlinedButtonTheme: OutlinedButtonThemeData(
           style: OutlinedButton.styleFrom(
-            primary: Colors.purple,
-            backgroundColor: Colors.green,
-          ),
+              // primary: Colors.purple,
+              // backgroundColor: Colors.green,
+              ),
         ),
       ),
       home: Splash(),

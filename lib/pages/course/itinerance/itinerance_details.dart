@@ -37,9 +37,9 @@ class _ItineranceDetails extends State<ItineranceDetails> {
         ),
         backgroundColor: Colors.indigo.shade900,
         bottom: PreferredSize(
-          preferredSize: Size(100, 30),
+          preferredSize: Size(100, 35),
           child: Container(
-            height: 30,
+            height: 35,
             color: Colors.indigo.shade100,
             child: Row(
               children: [

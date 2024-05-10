@@ -28,8 +28,10 @@ class ItineranceController extends GetxController with StateMixin<List> {
   //
   Future<List> getAllItinerancesSave() async {
     listeResumer.cast();
-    Map e = box.read("user");
-    Response rep = await requete.getE("itinerances/allsave/${e['id']}");
+    //box.read("type") == "admin" ?
+    var e = box.read("user");
+    Response rep =
+        await requete.getE("itinerances/allsave/${e['idPartenaire']}");
     if (rep.isOk) {
       print("-----: ${rep.body}");
       return rep.body;
@@ -41,7 +43,8 @@ class ItineranceController extends GetxController with StateMixin<List> {
   Future<List> getTronconsRoute(String nom) async {
     listeResumer.cast();
     Map e = box.read("user");
-    Response rep = await requete.getE("itinerances/course/${e['id']}/$nom");
+    Response rep =
+        await requete.getE("itinerances/course/${e['idPartenaire']}/$nom");
     if (rep.isOk) {
       print("-----: ${rep.body}");
       return rep.body;

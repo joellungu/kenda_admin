@@ -43,7 +43,7 @@ class BusController extends GetxController with StateMixin<List> {
 
   supprimer(String id) async {
     Response rep = await requete.deleteE(
-      "agents/$id",
+      "agent/$id",
     );
     if (rep.isOk) {
       Get.back();

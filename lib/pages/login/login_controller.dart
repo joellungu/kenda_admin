@@ -12,7 +12,7 @@ class LoginController extends GetxController {
   //
   loagingAgent(String numero, String mdp) async {
     //
-    Response rep = await requete.getE("agents/login/$numero/$mdp");
+    Response rep = await requete.getE("agent/login/$numero/$mdp");
     if (rep.isOk) {
       print(rep.statusCode);
       print(rep.body);
@@ -53,8 +53,8 @@ class LoginController extends GetxController {
 
   loagingAdmin(String numero, String mdp) async {
     //
-    print("partenaires/login/$numero/$mdp");
-    Response rep = await requete.getE("partenaires/login/$numero/$mdp");
+    print("agent/login/$numero/$mdp");
+    Response rep = await requete.getE("agent/login/$numero/$mdp");
     if (rep.isOk) {
       print(rep.statusCode);
       print(rep.body);
