@@ -18,6 +18,7 @@ import 'course/nouvelle_course/nouvelle_course_controller.dart';
 import 'course/rapports/rapport_controller.dart';
 import 'login/login.dart';
 import 'login/login_controller.dart';
+import 'profile/profile_controller.dart';
 
 class Splash extends StatelessWidget {
   //
@@ -34,6 +35,8 @@ class Splash extends StatelessWidget {
   RapportController rapportController = Get.put(RapportController());
   LoginController loginController = Get.put(LoginController());
   //
+  ProfileController profileController = Get.put(ProfileController());
+  //
   Splash() {
     Timer(const Duration(seconds: 3), () {
       //
@@ -42,18 +45,20 @@ class Splash extends StatelessWidget {
       Map e = box.read("user") ?? {};
 
       //
-      if (e['id'] != null) {
-        //
-        String type = box.read("type") ?? "";
-        //
-        if (type == "admin") {
-          Get.off(AccueilAdmin());
-        } else {
-          Get.off(Accueil());
-        }
-      } else {
-        Get.off(Login());
-      }
+      Get.off(Login());
+      //
+      // if (e['id'] != null) {
+      //   //
+      //   String type = box.read("type") ?? "";
+      //   //
+      //   if (type == "admin") {
+      //     Get.off(AccueilAdmin());
+      //   } else {
+      //     Get.off(Accueil());
+      //   }
+      // } else {
+      //   Get.off(Login());
+      // }
 
       //Get.off(Application());
       //Get.off(Admin());

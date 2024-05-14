@@ -5,6 +5,7 @@ import 'package:kenda_admin/pages/bus/bus.dart';
 import 'package:kenda_admin/pages/course/course.dart';
 import 'package:kenda_admin/pages/course/itinerance/itinerance.dart';
 import 'package:kenda_admin/pages/course/rapports/rapport.dart';
+import 'package:kenda_admin/pages/profile/profile.dart';
 import '../regularisation/regularisation.dart';
 
 class AccueilAdmin extends StatefulWidget {
@@ -26,7 +27,9 @@ class _AccueilAdmin extends State<AccueilAdmin> {
               ? Itenerance()
               : page == 2
                   ? Bus()
-                  : Agent(true),
+                  : page == 3
+                      ? Agent(true)
+                      : Profile(),
       bottomNavigationBar: BottomNavigationBar(
         onTap: (e) {
           //
@@ -51,8 +54,12 @@ class _AccueilAdmin extends State<AccueilAdmin> {
             label: "Bus",
           ),
           BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.profile_circled),
+            icon: Icon(CupertinoIcons.person_2),
             label: "Agents",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(CupertinoIcons.profile_circled),
+            label: "Profile",
           ),
         ],
       ),

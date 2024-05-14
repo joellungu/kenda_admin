@@ -25,28 +25,32 @@ class AgentController extends GetxController with StateMixin<List> {
     if (rep.isOk) {
       Get.back();
       //
-      Get.snackbar(
-        "Succès",
-        "Enregistrement éffectué",
-      );
-    } else {
-      //
-      Get.back();
-      Get.snackbar(
-        "Erreur",
-        "Enregistrement non éffectué code: ${rep.statusCode}",
-      );
+      //Get.back();
+      if (rep.isOk) {
+        load(rep.body['idPartenaire']);
+        Get.snackbar(
+          "Succès",
+          "Enregistrement éffectué",
+        );
+      } else {
+        //
+        Get.back();
+        Get.snackbar(
+          "Erreur",
+          "Enregistrement non éffectué code: ${rep.statusCode}",
+        );
+      }
     }
   }
 
-  supprimer(String id) async {
+  supprimer(Map a) async {
     Response rep = await requete.deleteE(
-      "agent/$id",
+      "agent/${a['id']}",
     );
     if (rep.isOk) {
       Get.back();
       Get.back();
-      load(1);
+      load(a['idPartenaire']);
       //
       Get.snackbar(
         "Succès",

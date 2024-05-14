@@ -26,6 +26,9 @@ class BusController extends GetxController with StateMixin<List> {
     Response rep = await requete.postE("bus", e);
     if (rep.isOk) {
       Get.back();
+      Get.back();
+      //
+      load(e['idPartenaire']);
       //
       Get.snackbar(
         "Succès",

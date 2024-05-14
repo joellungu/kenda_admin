@@ -137,13 +137,17 @@ class DetailsAgent extends StatelessWidget {
                             ),
                           ),
                         );
-                        agentController.supprimer("${e["id"]}");
+                        agentController.supprimer(e);
                       },
                       child: Container(
                         height: 40,
                         width: 150,
                         alignment: Alignment.center,
-                        child: Row(
+                        decoration: BoxDecoration(
+                          color: Colors.red.shade700,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: const Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             Text(
@@ -158,10 +162,6 @@ class DetailsAgent extends StatelessWidget {
                               color: Colors.white,
                             )
                           ],
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.red.shade700,
-                          borderRadius: BorderRadius.circular(10),
                         ),
                       ),
                     )
