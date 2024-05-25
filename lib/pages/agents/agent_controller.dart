@@ -24,22 +24,20 @@ class AgentController extends GetxController with StateMixin<List> {
     Response rep = await requete.postE("agent", e);
     if (rep.isOk) {
       Get.back();
+      Get.back();
       //
-      //Get.back();
-      if (rep.isOk) {
-        load(rep.body['idPartenaire']);
-        Get.snackbar(
-          "Succès",
-          "Enregistrement éffectué",
-        );
-      } else {
-        //
-        Get.back();
-        Get.snackbar(
-          "Erreur",
-          "Enregistrement non éffectué code: ${rep.statusCode}",
-        );
-      }
+      load(rep.body['idPartenaire']);
+      Get.snackbar(
+        "Succès",
+        "Enregistrement éffectué",
+      );
+    } else {
+      //
+      Get.back();
+      Get.snackbar(
+        "Erreur",
+        "Enregistrement non éffectué code: ${rep.statusCode}",
+      );
     }
   }
 

@@ -1,8 +1,9 @@
 import 'package:get/get.dart';
 
 class Requete extends GetConnect {
-  //static String url = "https://aiya-serveur-b5ff88079989.herokuapp.com";
-  static String url = "http://10.0.2.2:8080";
+  static String url = "https://aiya-serveur-b5ff88079989.herokuapp.com";
+  static String urlSt = "https://aiya-serveur-b5ff88079989.herokuapp.com";
+  //static String url = "http://10.0.2.2:8080";
   static String ws = "ws://10.0.2.2:8080";
 
   // static String url = "http://localhost:8080";

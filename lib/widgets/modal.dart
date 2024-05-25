@@ -8,6 +8,7 @@ showSimpleModal(Widget vue, BuildContext context) {
     builder: (c) {
       return Container(
         height: Get.size.height / 1.05,
+        width: 400,
         decoration: const BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(

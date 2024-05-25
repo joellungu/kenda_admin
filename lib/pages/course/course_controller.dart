@@ -27,6 +27,27 @@ class CourseController extends GetxController with StateMixin<List> {
     //
   }
 
+  Future<List> getAllCoures2(int jour) async {
+    //change([], status: RxStatus.loading());
+    //
+    var box = GetStorage();
+    Map e = box.read("user") ?? {};
+    print(e);
+    //
+    Response rep = await requete.getE("courses/all/${e['idPartenaire']}/$jour");
+    print(rep.statusCode);
+    print(rep.body);
+
+    if (rep.isOk) {
+      //
+      return rep.body;
+    } else {
+      //
+      return [];
+    }
+    //
+  }
+
   setStatus(String id, int valeur, int jour) async {
     //
     Response rep =

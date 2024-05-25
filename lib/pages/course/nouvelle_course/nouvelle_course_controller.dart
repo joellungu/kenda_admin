@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:get/get.dart';
+import 'package:kenda_admin/pages/accueil/accueil.dart';
+import 'package:kenda_admin/pages/accueil/accueil_admin.dart';
 import 'package:kenda_admin/utils/requetes.dart';
 
 class NouvelleCourseController extends GetxController {
@@ -16,6 +18,7 @@ class NouvelleCourseController extends GetxController {
 
       Get.back();
       Get.snackbar("Horaire", "Votre horaire a bien été enregistré");
+      Get.offAll(AccueilAdmin());
     } else {
       print(rep.statusCode);
       print(rep.body);

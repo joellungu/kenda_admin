@@ -253,57 +253,57 @@ class FormulaireBus extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Obx(
-                    () => Container(
-                      height: 55,
-                      // ignore: sort_child_properties_last
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          IconButton(
-                            onPressed: () {},
-                            icon: Icon(
-                              Icons.manage_accounts,
-                              color: Colors.grey,
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                                "Date mise en service: ${dateMiseenservice.value}"),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              showDatePicker(
-                                context: context,
-                                initialDate: DateTime.now(),
-                                firstDate: DateTime(1900),
-                                lastDate: DateTime(2100),
-                              ).then((d) {
-                                //
-                                dateMiseenservice.value =
-                                    "${d!.year}-${d.month}-${d.day}";
-                                //
-                              });
-                            },
-                            icon: Icon(
-                              Icons.calendar_month,
-                              color: Colors.grey,
-                            ),
-                          ),
-                        ],
-                      ),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        border: Border.all(
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ),
-                  ),
+                  // const SizedBox(
+                  //   height: 10,
+                  // ),
+                  // Obx(
+                  //   () => Container(
+                  //     height: 55,
+                  //     // ignore: sort_child_properties_last
+                  //     child: Row(
+                  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //       children: [
+                  //         IconButton(
+                  //           onPressed: () {},
+                  //           icon: Icon(
+                  //             Icons.manage_accounts,
+                  //             color: Colors.grey,
+                  //           ),
+                  //         ),
+                  //         Expanded(
+                  //           flex: 1,
+                  //           child: Text(
+                  //               "Date mise en service: ${dateMiseenservice.value}"),
+                  //         ),
+                  //         IconButton(
+                  //           onPressed: () {
+                  //             showDatePicker(
+                  //               context: context,
+                  //               initialDate: DateTime.now(),
+                  //               firstDate: DateTime(1900),
+                  //               lastDate: DateTime(2100),
+                  //             ).then((d) {
+                  //               //
+                  //               dateMiseenservice.value =
+                  //                   "${d!.year}-${d.month}-${d.day}";
+                  //               //
+                  //             });
+                  //           },
+                  //           icon: Icon(
+                  //             Icons.calendar_month,
+                  //             color: Colors.grey,
+                  //           ),
+                  //         ),
+                  //       ],
+                  //     ),
+                  //     decoration: BoxDecoration(
+                  //       borderRadius: BorderRadius.circular(5),
+                  //       border: Border.all(
+                  //         color: Colors.grey,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                   const SizedBox(
                     height: 10,
                   ),
@@ -377,30 +377,29 @@ class FormulaireBus extends StatelessWidget {
                       //print("Password value $value");
                     },
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  TextFormField(
-                    controller: kilometrage,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      //prefixIcon: const Icon(Icons.email),
-                      hintText: 'kilometrage'.tr,
-                      labelText: 'kilometrage'.tr,
-                    ),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'kilometrage_message'.tr;
-                      }
-
-                      return null;
-                    },
-                    onChanged: (value) {
-                      //print("Password value $value");
-                    },
-                  ),
+                  // const SizedBox(
+                  //   height: 10,
+                  // ),
+                  // TextFormField(
+                  //   controller: kilometrage,
+                  //   decoration: InputDecoration(
+                  //     border: OutlineInputBorder(
+                  //       borderRadius: BorderRadius.circular(5),
+                  //     ),
+                  //     //prefixIcon: const Icon(Icons.email),
+                  //     hintText: 'kilometrage'.tr,
+                  //     labelText: 'kilometrage'.tr,
+                  //   ),
+                  //   validator: (value) {
+                  //     if (value!.isEmpty) {
+                  //       return 'kilometrage_message'.tr;
+                  //     }
+                  //     return null;
+                  //   },
+                  //   onChanged: (value) {
+                  //     //print("Password value $value");
+                  //   },
+                  // ),
                   const SizedBox(
                     height: 10,
                   ),
@@ -432,10 +431,10 @@ class FormulaireBus extends StatelessWidget {
                     "type": type.text,
                     "numeroChassis": numeroChassis.text,
                     "dateAchat": dateAchat.value,
-                    "dateMiseenservice": dateMiseenservice.value,
+                    //"dateMiseenservice": dateMiseenservice.value,
                     "capacite": capacite.text,
                     "caracteristiques": caracteristiques.text,
-                    "kilometrage": kilometrage.text,
+                    //"kilometrage": kilometrage.text,
                     "climatisation": climatisation.value,
                     "numeroPlaque": numeroPlaque.text,
                     "logo": File(path.value).readAsBytesSync(),
@@ -463,9 +462,9 @@ class FormulaireBus extends StatelessWidget {
                 };
                 */
                   busController.enregistrement(u);
+                } else {
+                  Get.snackbar("Erreur", "Veuillez selectionner une image");
                 }
-              } else {
-                Get.snackbar("Erreur", "Veuillez selectionner une image");
               }
             },
             child: Padding(

@@ -38,7 +38,7 @@ class _Course extends State<Course> with SingleTickerProviderStateMixin {
     //
     controller!.addListener(() {
       //print("La valeur: ${controller!.index}");
-      courseController.getAllCoures(controller!.index + 1);
+      //courseController.getAllCoures(controller!.index + 1);
     });
   }
 
@@ -198,28 +198,31 @@ class _Course extends State<Course> with SingleTickerProviderStateMixin {
   }
 
   Widget getHoraire(int jour) {
-    return courseController.obx(
-      (state) {
-        List l = state!;
-        return ListView(
-          padding: EdgeInsets.all(10),
-          children: List.generate(
-            l.length,
-            (index) {
-              Map e = l[index];
-              return CourseItem(e);
-            },
-          ),
-        );
-      },
-      onEmpty: Container(),
-      onLoading: Center(
-        child: SizedBox(
-          height: 40,
-          width: 40,
-          child: CircularProgressIndicator(),
-        ),
-      ),
-    );
+    return FutureBuilder(
+        future: courseController.getAllCoures2(jour),
+        builder: (c, t) {
+          if (t.hasData) {
+            List l = t.data as List;
+            return ListView(
+              padding: EdgeInsets.all(10),
+              children: List.generate(
+                l.length,
+                (index) {
+                  Map e = l[index];
+                  return CourseItem(e);
+                },
+              ),
+            );
+          } else if (t.hasError) {
+            return Container();
+          }
+          return Center(
+            child: SizedBox(
+              height: 40,
+              width: 40,
+              child: CircularProgressIndicator(),
+            ),
+          );
+        });
   }
 }

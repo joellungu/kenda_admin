@@ -16,6 +16,7 @@ import 'course/itinerance/itinerance_controller.dart';
 import 'course/itinerance/lieu_controller.dart';
 import 'course/nouvelle_course/nouvelle_course_controller.dart';
 import 'course/rapports/rapport_controller.dart';
+import 'course/rapports/reservation_controller.dart';
 import 'login/login.dart';
 import 'login/login_controller.dart';
 import 'profile/profile_controller.dart';
@@ -36,6 +37,9 @@ class Splash extends StatelessWidget {
   LoginController loginController = Get.put(LoginController());
   //
   ProfileController profileController = Get.put(ProfileController());
+  //
+  ReservationController reservationController =
+      Get.put(ReservationController());
   //
   Splash() {
     Timer(const Duration(seconds: 3), () {

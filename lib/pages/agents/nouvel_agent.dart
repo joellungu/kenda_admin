@@ -140,32 +140,31 @@ class FormulaireAgent extends StatelessWidget {
                       //print("Password value $value");
                     },
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  TextFormField(
-                    controller: email,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      prefixIcon: const Icon(Icons.email),
-                      hintText: 'email'.tr,
-                      labelText: 'email'.tr,
-                    ),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'email_message'.tr;
-                      } else if (!value.isEmail) {
-                        return "Email erreur";
-                      }
-
-                      return null;
-                    },
-                    onChanged: (value) {
-                      //print("Password value $value");
-                    },
-                  ),
+                  // const SizedBox(
+                  //   height: 10,
+                  // ),
+                  // TextFormField(
+                  //   controller: email,
+                  //   decoration: InputDecoration(
+                  //     border: OutlineInputBorder(
+                  //       borderRadius: BorderRadius.circular(5),
+                  //     ),
+                  //     prefixIcon: const Icon(Icons.email),
+                  //     hintText: 'email'.tr,
+                  //     labelText: 'email'.tr,
+                  //   ),
+                  //   validator: (value) {
+                  //     if (value!.isEmpty) {
+                  //       return 'email_message'.tr;
+                  //     } else if (!value.isEmail) {
+                  //       return "Email erreur";
+                  //     }
+                  //     return null;
+                  //   },
+                  //   onChanged: (value) {
+                  //     //print("Password value $value");
+                  //   },
+                  // ),
                   const SizedBox(
                     height: 10,
                   ),
@@ -221,17 +220,17 @@ class FormulaireAgent extends StatelessWidget {
                                     child: Text("Receveur"),
                                     value: 2,
                                   ),
+                                  // DropdownMenuItem(
+                                  //   child: Text("Embarqueur"),
+                                  //   value: 3,
+                                  // ),
                                   DropdownMenuItem(
-                                    child: Text("Embarqueur"),
+                                    child: Text("Vendeur"),
                                     value: 3,
                                   ),
                                   DropdownMenuItem(
-                                    child: Text("Vendeur"),
-                                    value: 4,
-                                  ),
-                                  DropdownMenuItem(
                                     child: Text("gestionneur"),
-                                    value: 5,
+                                    value: 4,
                                   ),
                                 ],
                                 onChanged: (e) {
@@ -269,7 +268,7 @@ class FormulaireAgent extends StatelessWidget {
                   "postnom": postnom.text,
                   "prenom": prenom.text,
                   "numero": "243${telephone.text}",
-                  "email": email.text,
+                  //"email": email.text,
                   "adresse": adresse.text,
                   "password": "1234567",
                   "role": c.value,

@@ -11,6 +11,8 @@ import 'package:kenda_admin/pages/course/reservation.dart';
 import 'package:kenda_admin/widgets/modal.dart';
 import 'package:timelines/timelines.dart';
 
+import 'rapports/reservation_rapport.dart';
+
 class Detail extends StatefulWidget {
   Map e;
   Detail(this.e) {
@@ -281,19 +283,19 @@ class _Detail extends State<Detail> {
                         size: 15,
                       ),
                     ),
-                    ListTile(
-                      onTap: () {
-                        //showSimpleModal(Reservation(), context);
-                      },
-                      //airline_seat_recline_extra_rounded
-                      leading: Icon(CupertinoIcons.bus),
-                      title: Text("Emplacement du bus actuellement"),
-                      subtitle: Text("Kongo central / Boma"),
-                      trailing: const Icon(
-                        Icons.arrow_forward_ios,
-                        size: 15,
-                      ),
-                    ),
+                    // ListTile(
+                    //   onTap: () {
+                    //     //showSimpleModal(Reservation(), context);
+                    //   },
+                    //   //airline_seat_recline_extra_rounded
+                    //   leading: Icon(CupertinoIcons.bus),
+                    //   title: Text("Emplacement du bus actuellement"),
+                    //   subtitle: Text("Kongo central / Boma"),
+                    //   trailing: const Icon(
+                    //     Icons.arrow_forward_ios,
+                    //     size: 15,
+                    //   ),
+                    // ),
                     ListTile(
                       onTap: () {
                         /*
@@ -318,12 +320,13 @@ class _Detail extends State<Detail> {
                     ),
                     ListTile(
                       onTap: () {
-                        Get.to(Plus(widget.e));
+                        Get.to(ReservationRapport(widget.e, "", ""));
+                        //Reservation
                       },
-                      leading: Icon(CupertinoIcons.speaker_zzz),
-                      title: Text("Rapports"),
+                      leading: const Icon(Icons.calendar_today),
+                      title: const Text("Rapports"),
                       //subtitle: Text("..."),
-                      trailing: Icon(
+                      trailing: const Icon(
                         Icons.arrow_forward_ios,
                         size: 15,
                       ),
