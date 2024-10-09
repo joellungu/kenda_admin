@@ -45,7 +45,7 @@ class KendaAdmin extends StatelessWidget {
           ),
         ),
         primaryColor: Colors.blue,
-        backgroundColor: Colors.grey.shade200,
+        //backgroundColor: Colors.grey.shade200,
         appBarTheme: AppBarTheme(
           color: Colors.grey.shade200,
           centerTitle: true,
